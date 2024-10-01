@@ -14,6 +14,10 @@ namespace Open_Data_Global_Emission
         public Form1()
         {
             InitializeComponent();
+            // // Region: Africa 26%, Europe 20%, Other 54%
+            // Country: Ausralia 1%, India 1%, Other 97%
+            // Type: Energy 80% , Agricolture 7%, Other 14%.
+            // A segment: Total 27% , Onshore oil 14%, Other 59%
         }
 
         private void Form1_Load(object sender, EventArgs e)
