@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.listView1 = new System.Windows.Forms.ListView();
+            this.btnVisualizzaCsv = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -41,11 +42,22 @@
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
+            // btnVisualizzaCsv
+            // 
+            this.btnVisualizzaCsv.Location = new System.Drawing.Point(343, 89);
+            this.btnVisualizzaCsv.Name = "btnVisualizzaCsv";
+            this.btnVisualizzaCsv.Size = new System.Drawing.Size(75, 23);
+            this.btnVisualizzaCsv.TabIndex = 1;
+            this.btnVisualizzaCsv.Text = "button1";
+            this.btnVisualizzaCsv.UseVisualStyleBackColor = true;
+            this.btnVisualizzaCsv.Click += new System.EventHandler(this.btnVisualizzaCsv_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnVisualizzaCsv);
             this.Controls.Add(this.listView1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -56,6 +68,7 @@
         #endregion
 
         private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Button btnVisualizzaCsv;
     }
 }
 

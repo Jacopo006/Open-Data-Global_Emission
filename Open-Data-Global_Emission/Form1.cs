@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Open_Data_Global_Emission
@@ -9,60 +8,80 @@ namespace Open_Data_Global_Emission
     public partial class Form1 : Form
     {
         private List<MethaneData> listMethane;
-        private bool OrdinatoCresc = true;
 
         public Form1()
         {
             InitializeComponent();
-            // // Region: Africa 26%, Europe 20%, Other 54%
-            // Country: Ausralia 1%, India 1%, Other 97%
-            // Type: Energy 80% , Agricolture 7%, Other 14%.
-            // A segment: Total 27% , Onshore oil 14%, Other 59%
         }
 
+        // Evento che viene eseguito quando si carica la finestra
         private void Form1_Load(object sender, EventArgs e)
         {
             listMethane = new List<MethaneData>();
-
-            // Carica i dati dal CSV
-            CaricaDaCsv();
-            // Carica i dati nella ListView
-            CaricaNellaList();
         }
 
+        // Evento Click del bottone per visualizzare il CSV
+        private void btnVisualizzaCsv_Click(object sender, EventArgs e)
+        {
+            // Carica i dati dal CSV
+            CaricaDaCsv();
+            // Visualizza i dati nella ListView
+            CaricaNellaListView();
+        }
+
+        // Metodo che carica i dati dal file CSV
         private void CaricaDaCsv()
         {
-            using (StreamReader sr = new StreamReader("Methane_final.csv"))
+            string filePath = "Methane_final.csv"; // Assicurati che il file sia nel percorso corretto
+
+            if (!File.Exists(filePath))
             {
-                string line;
-                bool PrimaLinea = true; // Per saltare l'intestazione
+                MessageBox.Show($"Il file {filePath} non esiste. Assicurati che sia nel percorso corretto.");
+                return;
+            }
 
-                while ((line = sr.ReadLine()) != null)
+            try
+            {
+                using (StreamReader sr = new StreamReader(filePath))
                 {
-                    if (PrimaLinea)
+                    string line;
+                    bool primaLinea = true; // Per saltare l'intestazione
+
+                    listMethane.Clear(); // Pulisce la lista prima di aggiungere nuovi dati
+
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        PrimaLinea = false; // Salta la prima riga (header)
-                        continue;
+                        if (primaLinea)
+                        {
+                            primaLinea = false; // Salta la prima riga (header)
+                            continue;
+                        }
+
+                        string[] campo = line.Split(',');
+                        if (campo.Length < 6) continue; // Assicurati che ci siano abbastanza campi
+
+                        // Crea un nuovo oggetto MethaneData e lo aggiunge alla lista
+                        MethaneData data = new MethaneData
+                        {
+                            Region = campo[1],
+                            Country = campo[2],
+                            Emissions = double.TryParse(campo[3], out double emissions) ? emissions : 0,
+                            Type = campo[4],
+                            Segment = campo[5],
+                            Reason = campo.Length > 6 ? campo[6] : string.Empty
+                        };
+                        listMethane.Add(data);
                     }
-
-                    string[] campo = line.Split(',');
-                    if (campo.Length < 6) continue; // Assicurati che ci siano abbastanza campi
-
-                    MethaneData data = new MethaneData
-                    {
-                        Region = campo[1],
-                        Country = campo[2],
-                        Emissions = double.TryParse(campo[3], out double emissions) ? emissions : 0,
-                        Type = campo[4],
-                        Segment = campo[5],
-                        Reason = campo.Length > 6 ? campo[6] : string.Empty
-                    };
-                    listMethane.Add(data);
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Errore durante la lettura del file: {ex.Message}");
             }
         }
 
-        private void CaricaNellaList()
+        // Metodo che carica i dati nella ListView
+        private void CaricaNellaListView()
         {
             listView1.Items.Clear();
             listView1.Columns.Clear(); // Azzera le colonne esistenti
@@ -93,6 +112,26 @@ namespace Open_Data_Global_Emission
             }
         }
 
+        // Evento che gestisce la selezione di un elemento nella ListView
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Verifica se ci sono elementi selezionati
+            if (listView1.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listView1.SelectedItems[0];
+
+                // Mostra le informazioni dell'elemento selezionato in un MessageBox
+                string selectedRegion = selectedItem.SubItems[0].Text;
+                string selectedCountry = selectedItem.SubItems[1].Text;
+                double selectedEmissions = double.Parse(selectedItem.SubItems[2].Text);
+                string selectedType = selectedItem.SubItems[3].Text;
+                string selectedSegment = selectedItem.SubItems[4].Text;
+                string selectedReason = selectedItem.SubItems[5].Text;
+
+                MessageBox.Show($"Hai selezionato: {selectedRegion}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
+            }
+        }
+
         // Definizione della classe MethaneData
         class MethaneData
         {
@@ -102,53 +141,6 @@ namespace Open_Data_Global_Emission
             public string Type { get; set; }
             public string Segment { get; set; }
             public string Reason { get; set; }
-        }
-
-        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            switch (e.Column)
-            {
-                case 0: // Region
-                    listMethane = OrdinatoCresc
-                        ? listMethane.OrderBy(m => m.Region).ToList()
-                        : listMethane.OrderByDescending(m => m.Region).ToList();
-                    break;
-                case 1: // Country
-                    listMethane = OrdinatoCresc
-                        ? listMethane.OrderBy(m => m.Country).ToList()
-                        : listMethane.OrderByDescending(m => m.Country).ToList();
-                    break;
-                case 2: // Emissions
-                    listMethane = OrdinatoCresc
-                        ? listMethane.OrderBy(m => m.Emissions).ToList()
-                        : listMethane.OrderByDescending(m => m.Emissions).ToList();
-                    break;
-                    // Aggiungi casi per le altre colonne se necessario
-            }
-
-            // Inverte l'ordinamento per il prossimo click
-            OrdinatoCresc = !OrdinatoCresc;
-
-            CaricaNellaList();
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Verifica se ci sono elementi selezionati
-            if (listView1.SelectedItems.Count > 0)
-            {
-                ListViewItem selectedItem = listView1.SelectedItems[0];
-                // Esempio di utilizzo dei dati selezionati
-                string selectedRegion = selectedItem.SubItems[0].Text;
-                string selectedCountry = selectedItem.SubItems[1].Text;
-                double selectedEmissions = double.Parse(selectedItem.SubItems[2].Text);
-                string selectedType = selectedItem.SubItems[3].Text;
-                string selectedSegment = selectedItem.SubItems[4].Text;
-                string selectedReason = selectedItem.SubItems[5].Text;
-
-                // Fai qualcosa con i dati selezionati
-                MessageBox.Show($"Hai selezionato: {selectedRegion}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
-            }
         }
     }
 }
