@@ -47,19 +47,19 @@ namespace Open_Data_Global_Emission
                     if ((line = sr.ReadLine()) != null)
                     {
                         // Aggiungi le colonne direttamente dalla prima riga
-                        string[] colonne = line.Split(',');
+                        string[] colonne = line.Split(','); // Assicurati che il delimitatore sia corretto
                         foreach (string col in colonne)
                         {
-                            listView1.Columns.Add(col.Trim(), 150); // Aggiungi colonne dalla prima riga
+                            listView1.Columns.Add(col.Trim(), 150); // Imposta una larghezza iniziale di 150
                         }
                     }
 
                     // Leggi le righe successive e aggiungi i dati
                     while ((line = sr.ReadLine()) != null)
                     {
-                        string[] campo = line.Split(',');
+                        string[] campo = line.Split(','); // Assicurati che il delimitatore sia corretto
 
-                        // Verifica se il numero di campi è corretto
+                        // Assicurati che ci siano abbastanza campi
                         if (campo.Length != listView1.Columns.Count)
                         {
                             MessageBox.Show("Riga ignorata: non contiene il numero corretto di campi."); // Messaggio di debug
@@ -77,12 +77,22 @@ namespace Open_Data_Global_Emission
                         listView1.Items.Add(item);
                     }
                 }
+
+                // Imposta la larghezza delle colonne in base al contenuto
+                foreach (ColumnHeader column in listView1.Columns)
+                {
+                    column.Width = -2; // -2 significa "adatta automaticamente alla larghezza del contenuto"
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Errore durante la lettura del file: {ex.Message}"); // Mostra l'eccezione
             }
         }
+
+
+
+
 
         // Evento che gestisce la selezione di un elemento nella ListView
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -94,25 +104,15 @@ namespace Open_Data_Global_Emission
 
                 // Mostra le informazioni dell'elemento selezionato in un MessageBox
                 string selectedNumber = selectedItem.SubItems[0].Text; // Campo "number"
-                string selectedCountry = selectedItem.SubItems[1].Text;
-                string selectedEmissions = selectedItem.SubItems[2].Text;
-                string selectedType = selectedItem.SubItems[3].Text;
-                string selectedSegment = selectedItem.SubItems[4].Text;
-                string selectedReason = selectedItem.SubItems[5].Text;
+                string selectedRegion = selectedItem.SubItems[1].Text;
+                string selectedCountry = selectedItem.SubItems[2].Text;
+                string selectedEmissions = selectedItem.SubItems[3].Text;
+                string selectedType = selectedItem.SubItems[4].Text;
+                string selectedSegment = selectedItem.SubItems[5].Text;
+                string selectedReason = selectedItem.SubItems[6].Text;
 
-                MessageBox.Show($"Hai selezionato: {selectedNumber}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
+                MessageBox.Show($"Hai selezionato: {selectedNumber}, {selectedRegion}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
             }
-        }
-
-        // Definizione della classe MethaneData
-        class MethaneData
-        {
-            public string Region { get; set; }
-            public string Country { get; set; }
-            public double Emissions { get; set; }
-            public string Type { get; set; }
-            public string Segment { get; set; }
-            public string Reason { get; set; }
         }
     }
 }
