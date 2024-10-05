@@ -28,23 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
             // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
             this.listView1.HideSelection = false;
+            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(28, 32);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(546, 457);
+            this.listView1.Size = new System.Drawing.Size(798, 457);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // btnVisualizzaCsv
             // 
-            this.btnVisualizzaCsv.Location = new System.Drawing.Point(580, 32);
+            this.btnVisualizzaCsv.Location = new System.Drawing.Point(832, 32);
             this.btnVisualizzaCsv.Name = "btnVisualizzaCsv";
             this.btnVisualizzaCsv.Size = new System.Drawing.Size(75, 23);
             this.btnVisualizzaCsv.TabIndex = 1;
@@ -69,6 +75,7 @@
 
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button btnVisualizzaCsv;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
 
