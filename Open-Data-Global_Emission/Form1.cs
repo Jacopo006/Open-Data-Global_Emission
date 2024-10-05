@@ -24,6 +24,7 @@ namespace Open_Data_Global_Emission
         }
 
         // Metodo che carica i dati dal file CSV
+        // Metodo che carica i dati dal file CSV
         private void CaricaDaCsv()
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Methane_final.csv");
@@ -46,7 +47,7 @@ namespace Open_Data_Global_Emission
                     // Leggi la prima riga per impostare le intestazioni
                     if ((line = sr.ReadLine()) != null)
                     {
-                        // Aggiungi le colonne direttamente dalla prima riga
+                        // Aggiungi le colonne dalla prima riga del CSV
                         string[] colonne = line.Split(','); // Assicurati che il delimitatore sia corretto
                         foreach (string col in colonne)
                         {
@@ -66,11 +67,11 @@ namespace Open_Data_Global_Emission
                             continue; // Ignora la riga se non ha il numero corretto di campi
                         }
 
-                        // Crea un nuovo ListViewItem
+                        // Crea un nuovo ListViewItem e aggiungi tutti i campi
                         ListViewItem item = new ListViewItem(campo[0].Trim()); // Campo 0: "number"
                         for (int i = 1; i < campo.Length; i++)
                         {
-                            item.SubItems.Add(campo[i].Trim()); // Aggiungi le altre colonne
+                            item.SubItems.Add(campo[i].Trim()); // Aggiungi le altre colonne come SubItems
                         }
 
                         // Aggiungi l'elemento alla ListView
@@ -91,9 +92,6 @@ namespace Open_Data_Global_Emission
         }
 
 
-
-
-
         // Evento che gestisce la selezione di un elemento nella ListView
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -110,8 +108,9 @@ namespace Open_Data_Global_Emission
                 string selectedType = selectedItem.SubItems[4].Text;
                 string selectedSegment = selectedItem.SubItems[5].Text;
                 string selectedReason = selectedItem.SubItems[6].Text;
+                string selectedBaseYear = selectedItem.SubItems[7].Text;
 
-                MessageBox.Show($"Hai selezionato: {selectedNumber}, {selectedRegion}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
+                MessageBox.Show($"Hai selezionato: {selectedNumber}, {selectedRegion}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}, {selectedBaseYear}");
             }
         }
     }

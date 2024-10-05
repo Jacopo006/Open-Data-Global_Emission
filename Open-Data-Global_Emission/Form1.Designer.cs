@@ -37,14 +37,14 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(28, 32);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1381, 565);
+            this.listView1.Size = new System.Drawing.Size(546, 457);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // btnVisualizzaCsv
             // 
-            this.btnVisualizzaCsv.Location = new System.Drawing.Point(1415, 32);
+            this.btnVisualizzaCsv.Location = new System.Drawing.Point(580, 32);
             this.btnVisualizzaCsv.Name = "btnVisualizzaCsv";
             this.btnVisualizzaCsv.Size = new System.Drawing.Size(75, 23);
             this.btnVisualizzaCsv.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1580, 662);
+            this.ClientSize = new System.Drawing.Size(1106, 605);
             this.Controls.Add(this.btnVisualizzaCsv);
             this.Controls.Add(this.listView1);
             this.Name = "Form1";
