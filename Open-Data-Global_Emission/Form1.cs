@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -7,8 +6,6 @@ namespace Open_Data_Global_Emission
 {
     public partial class Form1 : Form
     {
-        private List<MethaneData> listMethane;
-
         public Form1()
         {
             InitializeComponent();
@@ -17,98 +14,73 @@ namespace Open_Data_Global_Emission
         // Evento che viene eseguito quando si carica la finestra
         private void Form1_Load(object sender, EventArgs e)
         {
-            listMethane = new List<MethaneData>();
+            listView1.View = View.Details; // Imposta la vista della ListView
         }
 
         // Evento Click del bottone per visualizzare il CSV
         private void btnVisualizzaCsv_Click(object sender, EventArgs e)
         {
-            // Carica i dati dal CSV
-            CaricaDaCsv();
-            // Visualizza i dati nella ListView
-            CaricaNellaListView();
+            CaricaDaCsv(); // Carica e visualizza il CSV
         }
 
         // Metodo che carica i dati dal file CSV
         private void CaricaDaCsv()
         {
-            string filePath = "Methane_final.csv"; // Assicurati che il file sia nel percorso corretto
-
-            if (!File.Exists(filePath))
-            {
-                MessageBox.Show($"Il file {filePath} non esiste. Assicurati che sia nel percorso corretto.");
-                return;
-            }
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Methane_final.csv");
 
             try
             {
+                if (!File.Exists(filePath))
+                {
+                    MessageBox.Show($"Il file {filePath} non esiste. Assicurati che sia nel percorso corretto.");
+                    return;
+                }
+
+                listView1.Items.Clear(); // Pulisce gli elementi esistenti
+                listView1.Columns.Clear(); // Pulisce le colonne esistenti
+
                 using (StreamReader sr = new StreamReader(filePath))
                 {
                     string line;
-                    bool primaLinea = true; // Per saltare l'intestazione
 
-                    listMethane.Clear(); // Pulisce la lista prima di aggiungere nuovi dati
+                    // Leggi la prima riga per impostare le intestazioni
+                    if ((line = sr.ReadLine()) != null)
+                    {
+                        // Aggiungi le colonne direttamente dalla prima riga
+                        string[] colonne = line.Split(',');
+                        foreach (string col in colonne)
+                        {
+                            listView1.Columns.Add(col.Trim(), 150); // Aggiungi colonne dalla prima riga
+                        }
+                    }
 
+                    // Leggi le righe successive e aggiungi i dati
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (primaLinea)
+                        string[] campo = line.Split(',');
+
+                        // Verifica se il numero di campi è corretto
+                        if (campo.Length != listView1.Columns.Count)
                         {
-                            primaLinea = false; // Salta la prima riga (header)
-                            continue;
+                            MessageBox.Show("Riga ignorata: non contiene il numero corretto di campi."); // Messaggio di debug
+                            continue; // Ignora la riga se non ha il numero corretto di campi
                         }
 
-                        string[] campo = line.Split(',');
-                        if (campo.Length < 6) continue; // Assicurati che ci siano abbastanza campi
-
-                        // Crea un nuovo oggetto MethaneData e lo aggiunge alla lista
-                        MethaneData data = new MethaneData
+                        // Crea un nuovo ListViewItem
+                        ListViewItem item = new ListViewItem(campo[0].Trim()); // Campo 0: "number"
+                        for (int i = 1; i < campo.Length; i++)
                         {
-                            Region = campo[1],
-                            Country = campo[2],
-                            Emissions = double.TryParse(campo[3], out double emissions) ? emissions : 0,
-                            Type = campo[4],
-                            Segment = campo[5],
-                            Reason = campo.Length > 6 ? campo[6] : string.Empty
-                        };
-                        listMethane.Add(data);
+                            item.SubItems.Add(campo[i].Trim()); // Aggiungi le altre colonne
+                        }
+
+                        // Aggiungi l'elemento alla ListView
+                        listView1.Items.Add(item);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Errore durante la lettura del file: {ex.Message}");
-            }
-        }
-
-        // Metodo che carica i dati nella ListView
-        private void CaricaNellaListView()
-        {
-            listView1.Items.Clear();
-            listView1.Columns.Clear(); // Azzera le colonne esistenti
-
-            // Imposta la vista della ListView per mostrare i dettagli
-            listView1.View = View.Details;
-
-            // Aggiungi le colonne alla ListView
-            listView1.Columns.Add("Region", 150);
-            listView1.Columns.Add("Country", 150);
-            listView1.Columns.Add("Emissions", 100);
-            listView1.Columns.Add("Type", 100);
-            listView1.Columns.Add("Segment", 100);
-            listView1.Columns.Add("Reason", 150);
-
-            // Aggiungi i dati dalla lista 'listMethane' alla ListView
-            foreach (MethaneData data in listMethane)
-            {
-                ListViewItem item = new ListViewItem(data.Region);
-                item.SubItems.Add(data.Country);
-                item.SubItems.Add(data.Emissions.ToString());
-                item.SubItems.Add(data.Type);
-                item.SubItems.Add(data.Segment);
-                item.SubItems.Add(data.Reason);
-
-                // Aggiungi l'elemento alla ListView
-                listView1.Items.Add(item);
+                MessageBox.Show($"Errore durante la lettura del file: {ex.Message}"); // Mostra l'eccezione
             }
         }
 
@@ -121,14 +93,14 @@ namespace Open_Data_Global_Emission
                 ListViewItem selectedItem = listView1.SelectedItems[0];
 
                 // Mostra le informazioni dell'elemento selezionato in un MessageBox
-                string selectedRegion = selectedItem.SubItems[0].Text;
+                string selectedNumber = selectedItem.SubItems[0].Text; // Campo "number"
                 string selectedCountry = selectedItem.SubItems[1].Text;
-                double selectedEmissions = double.Parse(selectedItem.SubItems[2].Text);
+                string selectedEmissions = selectedItem.SubItems[2].Text;
                 string selectedType = selectedItem.SubItems[3].Text;
                 string selectedSegment = selectedItem.SubItems[4].Text;
                 string selectedReason = selectedItem.SubItems[5].Text;
 
-                MessageBox.Show($"Hai selezionato: {selectedRegion}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
+                MessageBox.Show($"Hai selezionato: {selectedNumber}, {selectedCountry}, {selectedEmissions}, {selectedType}, {selectedSegment}, {selectedReason}");
             }
         }
 
