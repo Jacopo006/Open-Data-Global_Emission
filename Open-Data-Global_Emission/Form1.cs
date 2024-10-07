@@ -88,6 +88,8 @@ namespace Open_Data_Global_Emission
 
         private void CaricaNellaListView()
         {
+            listView1.View = View.Details;
+
             listView1.Items.Clear(); // Pulisci gli elementi esistenti
             listView1.Columns.Clear(); // Pulisci le colonne esistenti
 
