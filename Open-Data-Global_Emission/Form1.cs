@@ -139,6 +139,71 @@ namespace Open_Data_Global_Emission
                 MessageBox.Show(message);
             }
         }
+        private void txtRegionFilter_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void BtnFilterRegion_Click(object sender, EventArgs e)
+        {
+            // Assicurati che il CSV sia stato caricato
+            if (emissionList == null || emissionList.Count == 0)
+            {
+                MessageBox.Show("Per favore, carica prima il file CSV.");
+                return;
+            }
+
+            // Prendi il testo inserito dall'utente e rimuovi spazi extra
+            string regioneDaFiltrare = txtRegionFilter.Text.Trim();
+
+            if (string.IsNullOrEmpty(regioneDaFiltrare))
+            {
+                MessageBox.Show("Inserisci una regione per applicare il filtro.");
+                return;
+            }
+
+            // Lista per memorizzare i dati filtrati
+            List<EmissionData> datiFiltrati = new List<EmissionData>();
+
+            // Ciclo per filtrare le regioni senza alterare i dati originali
+            for (int i = 0; i < emissionList.Count; i++)
+            {
+                string regioneNelFile = emissionList[i].Region.Trim();
+
+                if (regioneNelFile.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase))
+                {
+                    datiFiltrati.Add(emissionList[i]);
+                }
+            }
+
+            // Aggiorna la ListView con i dati filtrati
+            listView1.Items.Clear();
+
+            for (int i = 0; i < datiFiltrati.Count; i++)
+            {
+                ListViewItem item = new ListViewItem(datiFiltrati[i].Number);
+                item.SubItems.Add(datiFiltrati[i].Region);
+                item.SubItems.Add(datiFiltrati[i].Country);
+                item.SubItems.Add(datiFiltrati[i].Emissions);
+                item.SubItems.Add(datiFiltrati[i].Type);
+                item.SubItems.Add(datiFiltrati[i].Segment);
+                item.SubItems.Add(datiFiltrati[i].Reason);
+                item.SubItems.Add(datiFiltrati[i].BaseYear);
+
+                listView1.Items.Add(item);
+            }
+
+            // Mostra un messaggio se non ci sono risultati
+            if (datiFiltrati.Count == 0)
+            {
+                MessageBox.Show($"Nessun risultato trovato per la regione: {txtRegionFilter.Text}");
+            }
+        }
+
+
+
+
+
+
     }
 
     public class EmissionData
