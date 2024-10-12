@@ -37,11 +37,12 @@ namespace Open_Data_Global_Emission
             {
                 if (!File.Exists(filePath))
                 {
-                    listView1.Items.Add($"Il file {filePath} non esiste. Assicurati che sia nel percorso corretto.");
+                    MessageBox.Show($"Il file {filePath} non esiste. Assicurati che sia nel percorso corretto.");
                     return;
                 }
 
-                listView1.Items.Clear(); // Pulisci la ListView esistente
+                emissionList.Clear(); // Pulisce l'elenco emissionList prima di caricare nuovi dati
+
                 using (StreamReader sr = new StreamReader(filePath))
                 {
                     string line;
@@ -51,41 +52,42 @@ namespace Open_Data_Global_Emission
                     {
                         if (isFirstLine)
                         {
-                            // Salta la prima riga (header)
-                            isFirstLine = false;
+                            isFirstLine = false; // Salta la prima riga (header)
                             continue;
                         }
 
                         string[] campo = line.Split(',');
 
-                        // Controlla se ci sono esattamente 8 colonne
+                        // Verifica se ci sono esattamente 8 colonne
                         if (campo.Length != 8)
                         {
-                            continue; // Ignora righe con numero di colonne errato
+                            continue; // Salta righe con numero di colonne errato
                         }
 
-                        // Crea un nuovo elemento ListView per la riga
-                        ListViewItem item = new ListViewItem(campo[0].Trim()); // Prima colonna (Number)
-
-                        // Aggiungi le altre colonne
-                        for (int i = 1; i < campo.Length; i++)
+                        // Aggiunge i dati alla lista emissionList
+                        emissionList.Add(new EmissionData
                         {
-                            item.SubItems.Add(campo[i].Trim());
-                        }
-
-                        // Aggiungi l'elemento alla ListView
-                        listView1.Items.Add(item);
+                            Number = campo[0].Trim(),
+                            Region = campo[1].Trim(),
+                            Country = campo[2].Trim(),
+                            Emissions = campo[3].Trim(),
+                            Type = campo[4].Trim(),
+                            Segment = campo[5].Trim(),
+                            Reason = campo[6].Trim(),
+                            BaseYear = campo[7].Trim()
+                        });
                     }
                 }
+
+                CaricaNellaListView(); // Mostra i dati caricati nella ListView
+
+                MessageBox.Show("Dati caricati correttamente.");
             }
             catch (Exception ex)
             {
-                listView1.Items.Add($"Errore durante la lettura del file: {ex.Message}");
+                MessageBox.Show($"Errore durante la lettura del file: {ex.Message}");
             }
         }
-
-
-
         private void CaricaNellaListView()
         {
             listView1.View = View.Details;
@@ -145,14 +147,14 @@ namespace Open_Data_Global_Emission
         }
         private void BtnFilterRegion_Click(object sender, EventArgs e)
         {
-            // Assicurati che il CSV sia stato caricato
+            // Controlla se emissionList contiene dati
             if (emissionList == null || emissionList.Count == 0)
             {
                 MessageBox.Show("Per favore, carica prima il file CSV.");
                 return;
             }
 
-            // Prendi il testo inserito dall'utente e rimuovi spazi extra
+            // Prendi il testo inserito dall'utente
             string regioneDaFiltrare = txtRegionFilter.Text.Trim();
 
             if (string.IsNullOrEmpty(regioneDaFiltrare))
@@ -161,21 +163,71 @@ namespace Open_Data_Global_Emission
                 return;
             }
 
+            // Filtra i dati presenti in emissionList
+            List<EmissionData> datiFiltrati = new List<EmissionData>();
+
+            foreach (var emission in emissionList)
+            {
+                if (emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase))
+                {
+                    datiFiltrati.Add(emission);
+                }
+            }
+
+            // Mostra i dati filtrati nella ListView
+            listView1.Items.Clear();
+
+            foreach (var emission in datiFiltrati)
+            {
+                ListViewItem item = new ListViewItem(emission.Number);
+                item.SubItems.Add(emission.Region);
+                item.SubItems.Add(emission.Country);
+                item.SubItems.Add(emission.Emissions);
+                item.SubItems.Add(emission.Type);
+                item.SubItems.Add(emission.Segment);
+                item.SubItems.Add(emission.Reason);
+                item.SubItems.Add(emission.BaseYear);
+
+                listView1.Items.Add(item);
+            }
+
+            // Mostra un messaggio se non ci sono risultati
+            if (datiFiltrati.Count == 0)
+            {
+                MessageBox.Show($"Nessun risultato trovato per la regione: {regioneDaFiltrare}");
+            }
+        }
+        private void BtnFilterCountry_Click(object sender, EventArgs e)
+        {
+            // Controlla se emissionList contiene dati
+            if (emissionList == null || emissionList.Count == 0)
+            {
+                MessageBox.Show("Per favore, carica prima il file CSV.");
+                return;
+            }
+
+            // Prendi il testo inserito dall'utente per il Country
+            string countryDaFiltrare = txtCountryFilter.Text.Trim();
+
+            if (string.IsNullOrEmpty(countryDaFiltrare))
+            {
+                MessageBox.Show("Inserisci un Paese per applicare il filtro.");
+                return;
+            }
+
             // Lista per memorizzare i dati filtrati
             List<EmissionData> datiFiltrati = new List<EmissionData>();
 
-            // Ciclo per filtrare le regioni senza alterare i dati originali
+            // Ciclo for per filtrare i dati presenti in emissionList per il campo Country
             for (int i = 0; i < emissionList.Count; i++)
             {
-                string regioneNelFile = emissionList[i].Region.Trim();
-
-                if (regioneNelFile.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase))
+                if (emissionList[i].Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase))
                 {
                     datiFiltrati.Add(emissionList[i]);
                 }
             }
 
-            // Aggiorna la ListView con i dati filtrati
+            // Mostra i dati filtrati nella ListView
             listView1.Items.Clear();
 
             for (int i = 0; i < datiFiltrati.Count; i++)
@@ -195,15 +247,14 @@ namespace Open_Data_Global_Emission
             // Mostra un messaggio se non ci sono risultati
             if (datiFiltrati.Count == 0)
             {
-                MessageBox.Show($"Nessun risultato trovato per la regione: {txtRegionFilter.Text}");
+                MessageBox.Show($"Nessun risultato trovato per il Paese: {countryDaFiltrare}");
             }
         }
 
+        private void txtCountryFilter_TextChanged(object sender, EventArgs e)
+        {
 
-
-
-
-
+        }
     }
 
     public class EmissionData
