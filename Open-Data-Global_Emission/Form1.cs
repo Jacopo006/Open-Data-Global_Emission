@@ -16,19 +16,15 @@ namespace Open_Data_Global_Emission
             InitializeComponent();
             emissionList = new List<EmissionData>();
         }
-
-        // Assicurati di chiamare SetupListView() nel costruttore o all'inizio
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
         private void btnVisualizzaCsv_Click(object sender, EventArgs e)
         {
             CaricaDaCsv(); // Carica e visualizza il CSV
             CaricaNellaListView(); // Carica i dati nella ListView
         }
-
         private async void CaricaDaCsv()
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Methane_final.csv");
@@ -129,8 +125,6 @@ namespace Open_Data_Global_Emission
                 column.Width = -2; // -2 significa "adatta automaticamente alla larghezza del contenuto"
             }
         }
-
-
         // Evento che gestisce la selezione di un elemento nella ListView
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -250,10 +244,63 @@ namespace Open_Data_Global_Emission
                 MessageBox.Show($"Nessun risultato trovato per il Paese: {countryDaFiltrare}");
             }
         }
-
         private void txtCountryFilter_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OrdinaPerEmissioni(true); // Ordine crescente
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OrdinaPerEmissioni(false); // Ordine decrescente
+        }
+
+        private void OrdinaPerEmissioni(bool ordineCrescente)
+        {
+            // Controlla se emissionList contiene dati
+            if (emissionList == null || emissionList.Count == 0)
+            {
+                MessageBox.Show("Per favore, carica prima il file CSV.");
+                return;
+            }
+
+            // Definisci la cultura italiana per gestire correttamente i numeri con la virgola
+            var cultura = new System.Globalization.CultureInfo("it-IT");
+
+            // Ordina in base all'ordine specificato dal parametro
+            List<EmissionData> datiOrdinati;
+            if (ordineCrescente)
+            {
+                // Ordine crescente
+                datiOrdinati = emissionList.OrderBy(emission =>
+                    Convert.ToDouble(emission.Emissions, cultura)).ToList();
+            }
+            else
+            {
+                // Ordine decrescente
+                datiOrdinati = emissionList.OrderByDescending(emission =>
+                    Convert.ToDouble(emission.Emissions, cultura)).ToList();
+            }
+
+            // Mostra i dati ordinati nella ListView
+            listView1.Items.Clear();
+
+            for (int i = 0; i < datiOrdinati.Count; i++)
+            {
+                ListViewItem item = new ListViewItem(datiOrdinati[i].Number);
+                item.SubItems.Add(datiOrdinati[i].Region);
+                item.SubItems.Add(datiOrdinati[i].Country);
+                item.SubItems.Add(datiOrdinati[i].Emissions);
+                item.SubItems.Add(datiOrdinati[i].Type);
+                item.SubItems.Add(datiOrdinati[i].Segment);
+                item.SubItems.Add(datiOrdinati[i].Reason);
+                item.SubItems.Add(datiOrdinati[i].BaseYear);
+
+                listView1.Items.Add(item);
+            }
         }
     }
 
