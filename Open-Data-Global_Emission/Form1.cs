@@ -253,6 +253,7 @@ namespace Open_Data_Global_Emission
         {
             OrdinaPerEmissioni(true); // Ordine crescente
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             OrdinaPerEmissioni(false); // Ordine decrescente
@@ -267,40 +268,103 @@ namespace Open_Data_Global_Emission
                 return;
             }
 
-            // Definisci la cultura italiana per gestire correttamente i numeri con la virgola
-            var cultura = new System.Globalization.CultureInfo("it-IT");
-
-            // Ordina in base all'ordine specificato dal parametro
-            List<EmissionData> datiOrdinati;
+            // Prova a ordinare la lista basandosi sulla colonna Emissions
             if (ordineCrescente)
             {
                 // Ordine crescente
-                datiOrdinati = emissionList.OrderBy(emission =>
-                    Convert.ToDouble(emission.Emissions, cultura)).ToList();
+                emissionList.Sort((x, y) => x.Emissions.CompareTo(y.Emissions));
             }
             else
             {
                 // Ordine decrescente
-                datiOrdinati = emissionList.OrderByDescending(emission =>
-                    Convert.ToDouble(emission.Emissions, cultura)).ToList();
+                emissionList.Sort((x, y) => y.Emissions.CompareTo(x.Emissions));
             }
 
-            // Mostra i dati ordinati nella ListView
+            // Pulisce la ListView
             listView1.Items.Clear();
 
-            for (int i = 0; i < datiOrdinati.Count; i++)
+            // Mostra i dati ordinati nella ListView
+            for (int i = 0; i < emissionList.Count; i++)
             {
-                ListViewItem item = new ListViewItem(datiOrdinati[i].Number);
-                item.SubItems.Add(datiOrdinati[i].Region);
-                item.SubItems.Add(datiOrdinati[i].Country);
-                item.SubItems.Add(datiOrdinati[i].Emissions);
-                item.SubItems.Add(datiOrdinati[i].Type);
-                item.SubItems.Add(datiOrdinati[i].Segment);
-                item.SubItems.Add(datiOrdinati[i].Reason);
-                item.SubItems.Add(datiOrdinati[i].BaseYear);
+                ListViewItem item = new ListViewItem(emissionList[i].Number);
+                item.SubItems.Add(emissionList[i].Region);
+                item.SubItems.Add(emissionList[i].Country);
+                item.SubItems.Add(emissionList[i].Emissions);
+                item.SubItems.Add(emissionList[i].Type);
+                item.SubItems.Add(emissionList[i].Segment);
+                item.SubItems.Add(emissionList[i].Reason);
+                item.SubItems.Add(emissionList[i].BaseYear);
 
                 listView1.Items.Add(item);
             }
+        }
+
+
+
+
+        private void BtnFilterYear_Click(object sender, EventArgs e)
+        {
+            // Prendi l'anno inserito nella TextBox
+            string yearDaFiltrare = txtYearFilter.Text.Trim();
+
+            if (string.IsNullOrEmpty(yearDaFiltrare))
+            {
+                MessageBox.Show("Inserisci un anno per applicare il filtro.");
+                return;
+            }
+
+            // Filtra i dati presenti in emissionList in base all'anno
+            List<EmissionData> datiFiltrati = emissionList
+                .Where(emission => emission.BaseYear != null && emission.BaseYear.Trim().Contains(yearDaFiltrare))
+                .ToList();
+
+            // Mostra i dati filtrati nella ListView
+            listView1.Items.Clear();
+
+            foreach (var emission in datiFiltrati)
+            {
+                ListViewItem item = new ListViewItem(emission.Number);
+                item.SubItems.Add(emission.Region);
+                item.SubItems.Add(emission.Country);
+                item.SubItems.Add(emission.Emissions);
+                item.SubItems.Add(emission.Type);
+                item.SubItems.Add(emission.Segment);
+                item.SubItems.Add(emission.Reason);
+                item.SubItems.Add(emission.BaseYear);
+
+                listView1.Items.Add(item);
+            }
+
+            // Mostra un messaggio se non ci sono risultati
+            if (datiFiltrati.Count == 0)
+            {
+                MessageBox.Show($"Nessun risultato trovato per l'anno: {yearDaFiltrare}");
+            }
+        }
+
+        private void BtnCalcolaStatistiche_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Calcola la somma totale e la media delle emissioni
+                double sommaEmissioni = emissionList.Sum(emission => double.Parse(emission.Emissions));
+                double mediaEmissioni = emissionList.Average(emission => double.Parse(emission.Emissions));
+
+                // Mostra le statistiche
+                MessageBox.Show($"Somma totale delle emissioni: {sommaEmissioni}\nMedia delle emissioni: {mediaEmissioni}");
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Errore nel calcolo delle statistiche: Formato numerico non valido. {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Errore nel calcolo delle statistiche: {ex.Message}");
+            }
+        }
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

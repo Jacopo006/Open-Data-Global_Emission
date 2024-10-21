@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
@@ -40,6 +40,10 @@
             this.BtnFilterCountry = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.BtnFilterYear = new System.Windows.Forms.Button();
+            this.txtYearFilter = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.BtnCalcolaStatistiche = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -48,7 +52,7 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6});
+            listViewItem1});
             this.listView1.Location = new System.Drawing.Point(28, 32);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(503, 522);
@@ -92,6 +96,7 @@
             this.label1.Size = new System.Drawing.Size(219, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Inserisci il nome della regione che vuoi filtrare";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -122,7 +127,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(537, 204);
+            this.button1.Location = new System.Drawing.Point(613, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 67);
             this.button1.TabIndex = 8;
@@ -132,7 +137,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(643, 204);
+            this.button2.Location = new System.Drawing.Point(719, 32);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 67);
             this.button2.TabIndex = 9;
@@ -140,11 +145,51 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // BtnFilterYear
+            // 
+            this.BtnFilterYear.Location = new System.Drawing.Point(643, 226);
+            this.BtnFilterYear.Name = "BtnFilterYear";
+            this.BtnFilterYear.Size = new System.Drawing.Size(113, 20);
+            this.BtnFilterYear.TabIndex = 10;
+            this.BtnFilterYear.Text = "Filtra per Anno";
+            this.BtnFilterYear.UseVisualStyleBackColor = true;
+            this.BtnFilterYear.Click += new System.EventHandler(this.BtnFilterYear_Click);
+            // 
+            // txtYearFilter
+            // 
+            this.txtYearFilter.Location = new System.Drawing.Point(537, 226);
+            this.txtYearFilter.Name = "txtYearFilter";
+            this.txtYearFilter.Size = new System.Drawing.Size(100, 20);
+            this.txtYearFilter.TabIndex = 11;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(534, 210);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(204, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Inserisci la data del paese che vuoi filtrare";
+            // 
+            // BtnCalcolaStatistiche
+            // 
+            this.BtnCalcolaStatistiche.Location = new System.Drawing.Point(537, 264);
+            this.BtnCalcolaStatistiche.Name = "BtnCalcolaStatistiche";
+            this.BtnCalcolaStatistiche.Size = new System.Drawing.Size(100, 67);
+            this.BtnCalcolaStatistiche.TabIndex = 13;
+            this.BtnCalcolaStatistiche.Text = "Ordinamento Emissioni Crescente";
+            this.BtnCalcolaStatistiche.UseVisualStyleBackColor = true;
+            this.BtnCalcolaStatistiche.Click += new System.EventHandler(this.BtnCalcolaStatistiche_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1106, 605);
+            this.ClientSize = new System.Drawing.Size(900, 605);
+            this.Controls.Add(this.BtnCalcolaStatistiche);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtYearFilter);
+            this.Controls.Add(this.BtnFilterYear);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
@@ -175,6 +220,10 @@
         private System.Windows.Forms.Button BtnFilterCountry;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnFilterYear;
+        private System.Windows.Forms.TextBox txtYearFilter;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button BtnCalcolaStatistiche;
     }
 }
 
