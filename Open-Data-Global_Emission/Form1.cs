@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace Open_Data_Global_Emission
         {
             InitializeComponent();
             emissionList = new List<EmissionData>();
+            listView1.ItemActivate += ListView_ItemActivate;
+            listView1.FullRowSelect = true;
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -128,12 +132,7 @@ namespace Open_Data_Global_Emission
         // Evento che gestisce la selezione di un elemento nella ListView
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count > 0)
-            {
-                ListViewItem selectedItem = listView1.SelectedItems[0];
-                string message = $"Hai selezionato: {selectedItem.SubItems[0].Text}, {selectedItem.SubItems[1].Text}, {selectedItem.SubItems[2].Text}, {selectedItem.SubItems[3].Text}, {selectedItem.SubItems[4].Text}, {selectedItem.SubItems[5].Text}, {selectedItem.SubItems[6].Text}, {selectedItem.SubItems[7].Text}";
-                MessageBox.Show(message);
-            }
+            
         }
         private void txtRegionFilter_TextChanged(object sender, EventArgs e)
         {
@@ -287,17 +286,37 @@ namespace Open_Data_Global_Emission
         {
 
         }
-    }
 
-    public class EmissionData
-    {
-        public string Number { get; set; }
-        public string Region { get; set; }
-        public string Country { get; set; }
-        public string Emissions { get; set; }
-        public string Type { get; set; }
-        public string Segment { get; set; }
-        public string Reason { get; set; }
-        public string BaseYear { get; set; }
+        private void ListView_ItemActivate(object sender, EventArgs e)
+        {
+            // Verifica se c'è un elemento selezionato
+            if (listView1.SelectedItems.Count > 0)
+            {
+                var selectedItem = listView1.SelectedItems[0];
+                string driverName = selectedItem.SubItems[1].Text;
+
+                // Costruisci l'URL per la pagina Wikipedia del pilota
+                string wikipediaUrl = $"https://en.wikipedia.org/wiki/{driverName.Replace(" ", "_")}";
+
+                // Usa Process.Start per aprire il link nel browser predefinito
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = wikipediaUrl,
+                    UseShellExecute = true // Necessario per aprire l'URL nel browser predefinito
+                });
+            }
+        }
+
+        public class EmissionData
+        {
+            public string Number { get; set; }
+            public string Region { get; set; }
+            public string Country { get; set; }
+            public string Emissions { get; set; }
+            public string Type { get; set; }
+            public string Segment { get; set; }
+            public string Reason { get; set; }
+            public string BaseYear { get; set; }
+        }
     }
 }
