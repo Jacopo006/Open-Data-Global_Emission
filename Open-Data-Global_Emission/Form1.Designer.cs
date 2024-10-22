@@ -177,7 +177,7 @@
             this.BtnCalcolaStatistiche.Name = "BtnCalcolaStatistiche";
             this.BtnCalcolaStatistiche.Size = new System.Drawing.Size(100, 67);
             this.BtnCalcolaStatistiche.TabIndex = 13;
-            this.BtnCalcolaStatistiche.Text = "Ordinamento Emissioni Crescente";
+            this.BtnCalcolaStatistiche.Text = "Media Emissioni";
             this.BtnCalcolaStatistiche.UseVisualStyleBackColor = true;
             this.BtnCalcolaStatistiche.Click += new System.EventHandler(this.BtnCalcolaStatistiche_Click);
             // 
