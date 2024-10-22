@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
@@ -55,7 +55,7 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem6});
             this.listView1.Location = new System.Drawing.Point(12, 181);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(876, 412);
@@ -65,7 +65,9 @@
             // 
             // btnVisualizzaCsv
             // 
-            this.btnVisualizzaCsv.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnVisualizzaCsv.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.btnVisualizzaCsv.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVisualizzaCsv.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnVisualizzaCsv.Location = new System.Drawing.Point(10, 12);
             this.btnVisualizzaCsv.Name = "btnVisualizzaCsv";
             this.btnVisualizzaCsv.Size = new System.Drawing.Size(109, 67);
@@ -76,7 +78,9 @@
             // 
             // BtnFilterRegion
             // 
-            this.BtnFilterRegion.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnFilterRegion.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BtnFilterRegion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnFilterRegion.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BtnFilterRegion.Location = new System.Drawing.Point(119, 112);
             this.BtnFilterRegion.Name = "BtnFilterRegion";
             this.BtnFilterRegion.Size = new System.Drawing.Size(113, 63);
@@ -124,7 +128,9 @@
             // 
             // BtnFilterCountry
             // 
-            this.BtnFilterCountry.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnFilterCountry.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BtnFilterCountry.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnFilterCountry.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BtnFilterCountry.Location = new System.Drawing.Point(348, 112);
             this.BtnFilterCountry.Name = "BtnFilterCountry";
             this.BtnFilterCountry.Size = new System.Drawing.Size(104, 63);
@@ -135,7 +141,8 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button1.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.Location = new System.Drawing.Point(125, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(107, 67);
@@ -146,7 +153,8 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.button2.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.button2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button2.Location = new System.Drawing.Point(238, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(104, 67);
@@ -157,7 +165,9 @@
             // 
             // BtnFilterYear
             // 
-            this.BtnFilterYear.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnFilterYear.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BtnFilterYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnFilterYear.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BtnFilterYear.Location = new System.Drawing.Point(567, 112);
             this.BtnFilterYear.Name = "BtnFilterYear";
             this.BtnFilterYear.Size = new System.Drawing.Size(104, 63);
@@ -185,7 +195,9 @@
             // 
             // BtnCalcolaStatistiche
             // 
-            this.BtnCalcolaStatistiche.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnCalcolaStatistiche.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BtnCalcolaStatistiche.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnCalcolaStatistiche.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BtnCalcolaStatistiche.Location = new System.Drawing.Point(348, 12);
             this.BtnCalcolaStatistiche.Name = "BtnCalcolaStatistiche";
             this.BtnCalcolaStatistiche.Size = new System.Drawing.Size(104, 67);
@@ -213,7 +225,9 @@
             // 
             // BtnAlert
             // 
-            this.BtnAlert.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnAlert.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BtnAlert.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnAlert.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BtnAlert.Location = new System.Drawing.Point(786, 112);
             this.BtnAlert.Name = "BtnAlert";
             this.BtnAlert.Size = new System.Drawing.Size(104, 63);
