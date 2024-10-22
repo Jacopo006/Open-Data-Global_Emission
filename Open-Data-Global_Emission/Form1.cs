@@ -11,6 +11,7 @@ namespace Open_Data_Global_Emission
     public partial class Form1 : Form
     {
         private List<EmissionData> emissionList;
+        private const double SogliaEmissioni = 100000; // Imposta una soglia d'allerta (valore esempio)
 
         public Form1()
         {
@@ -19,8 +20,9 @@ namespace Open_Data_Global_Emission
             listView1.ItemActivate += ListView_ItemActivate;
             listView1.FullRowSelect = true;
 
-        }
-        private void Form1_Load(object sender, EventArgs e)
+
+    }
+    private void Form1_Load(object sender, EventArgs e)
         {
 
         }
@@ -63,6 +65,7 @@ namespace Open_Data_Global_Emission
                         {
                             continue; // Salta righe con numero di colonne errato
                         }
+
 
                         // Aggiunge i dati alla lista emissionList
                         emissionList.Add(new EmissionData
@@ -284,7 +287,25 @@ namespace Open_Data_Global_Emission
         }
         private void BtnAlert_Click(object sender, EventArgs e)
         {
+            if (emissionList == null || emissionList.Count == 0)
+            {
+                MessageBox.Show("Per favore, carica prima il file CSV.");
+                return;
+            }
 
+            // Filtra le regioni che hanno emissioni superiori alla soglia
+            var regioniAllerta = emissionList.Where(emission =>
+                double.TryParse(emission.Emissions, out double emissionValue) && emissionValue > SogliaEmissioni).ToList();
+
+            if (regioniAllerta.Count == 0)
+            {
+                MessageBox.Show($"Nessuna regione ha superato la soglia di {SogliaEmissioni}.");
+            }
+            else
+            {
+                // Mostra i risultati nella ListView
+                VisualizzaDatiFiltrati(regioniAllerta);
+            }
         }
 
         private void ListView_ItemActivate(object sender, EventArgs e)
