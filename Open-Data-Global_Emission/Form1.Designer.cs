@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
@@ -44,6 +44,9 @@
             this.txtYearFilter = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.BtnCalcolaStatistiche = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.BtnAlert = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -52,10 +55,10 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem3});
             this.listView1.Location = new System.Drawing.Point(12, 181);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(876, 369);
+            this.listView1.Size = new System.Drawing.Size(876, 412);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
@@ -84,7 +87,7 @@
             // 
             // txtRegionFilter
             // 
-            this.txtRegionFilter.Location = new System.Drawing.Point(13, 112);
+            this.txtRegionFilter.Location = new System.Drawing.Point(12, 112);
             this.txtRegionFilter.Multiline = true;
             this.txtRegionFilter.Name = "txtRegionFilter";
             this.txtRegionFilter.Size = new System.Drawing.Size(100, 63);
@@ -191,11 +194,42 @@
             this.BtnCalcolaStatistiche.UseVisualStyleBackColor = false;
             this.BtnCalcolaStatistiche.Click += new System.EventHandler(this.BtnCalcolaStatistiche_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(677, 96);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(160, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Inserisci la soglia d\'allerta minima";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(680, 112);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 63);
+            this.textBox1.TabIndex = 15;
+            // 
+            // BtnAlert
+            // 
+            this.BtnAlert.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.BtnAlert.Location = new System.Drawing.Point(786, 112);
+            this.BtnAlert.Name = "BtnAlert";
+            this.BtnAlert.Size = new System.Drawing.Size(104, 63);
+            this.BtnAlert.TabIndex = 16;
+            this.BtnAlert.Text = "Inserisci la soglia d\'allerta";
+            this.BtnAlert.UseVisualStyleBackColor = false;
+            this.BtnAlert.Click += new System.EventHandler(this.BtnAlert_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 605);
+            this.Controls.Add(this.BtnAlert);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.BtnCalcolaStatistiche);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtYearFilter);
@@ -234,6 +268,9 @@
         private System.Windows.Forms.TextBox txtYearFilter;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button BtnCalcolaStatistiche;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button BtnAlert;
     }
 }
 

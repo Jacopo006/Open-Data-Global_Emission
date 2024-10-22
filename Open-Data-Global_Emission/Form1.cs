@@ -283,6 +283,10 @@ namespace Open_Data_Global_Emission
         {
 
         }
+        private void BtnAlert_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class EmissionData
