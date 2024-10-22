@@ -20,9 +20,15 @@ namespace Open_Data_Global_Emission
             listView1.ItemActivate += ListView_ItemActivate;
             listView1.FullRowSelect = true;
 
+            // Aggiungi i tipi di energia alla ComboBox basati sui dati effettivi del CSV
+            comboBoxEnergyType.Items.AddRange(new string[] { "Agriculture", "Energy" });
+            comboBoxEnergyType.SelectedIndex = 0; // Seleziona il primo tipo di energia per default
 
-    }
-    private void Form1_Load(object sender, EventArgs e)
+            // Collegare l'evento SelectedIndexChanged alla ComboBox
+            comboBoxEnergyType.SelectedIndexChanged += comboBoxEnergyType_SelectedIndexChanged;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
@@ -162,10 +168,6 @@ namespace Open_Data_Global_Emission
                 listView1.Items.Add(item);
             }
 
-            if (datiFiltrati.Count == 0)
-            {
-                MessageBox.Show("Nessun risultato trovato.");
-            }
         }
         private void FiltraEVisualizzaDati()
         {
@@ -175,21 +177,24 @@ namespace Open_Data_Global_Emission
                 return;
             }
 
-            // Prendi i valori dai text box per ogni filtro
+            // Prendi i valori dai text box e dalla ComboBox per ogni filtro
             string regioneDaFiltrare = txtRegionFilter.Text.Trim();
             string countryDaFiltrare = txtCountryFilter.Text.Trim();
             string yearDaFiltrare = txtYearFilter.Text.Trim();
+            string tipoEnergiaDaFiltrare = comboBoxEnergyType.SelectedItem?.ToString().Trim();
 
-            // Filtra la lista in base ai campi che non sono vuoti
+            // Filtra la lista emissionList in base ai campi inseriti
             var datiFiltrati = emissionList.Where(emission =>
                 (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare))
+                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
+                (string.IsNullOrEmpty(tipoEnergiaDaFiltrare) || emission.Type.Equals(tipoEnergiaDaFiltrare, StringComparison.OrdinalIgnoreCase)) // Filtro sul tipo di energia
             ).ToList();
 
-            // Visualizza i dati filtrati
+            // Visualizza i dati filtrati nella ListView
             VisualizzaDatiFiltrati(datiFiltrati);
         }
+
 
         private void BtnFilterRegion_Click(object sender, EventArgs e)
         {
@@ -223,12 +228,6 @@ namespace Open_Data_Global_Emission
 
         private void OrdinaPerEmissioni(bool ordineCrescente)
         {
-            // Controlla se emissionList contiene dati
-            if (emissionList == null || emissionList.Count == 0)
-            {
-                MessageBox.Show("Per favore, carica prima il file CSV.");
-                return;
-            }
 
             // Prova a ordinare la lista basandosi sulla colonna Emissions
             if (ordineCrescente)
@@ -287,11 +286,6 @@ namespace Open_Data_Global_Emission
         }
         private void BtnAlert_Click(object sender, EventArgs e)
         {
-            if (emissionList == null || emissionList.Count == 0)
-            {
-                MessageBox.Show("Per favore, carica prima il file CSV.");
-                return;
-            }
 
             // Filtra le regioni che hanno emissioni superiori alla soglia
             var regioniAllerta = emissionList.Where(emission =>
@@ -339,5 +333,21 @@ namespace Open_Data_Global_Emission
             public string Reason { get; set; }
             public string BaseYear { get; set; }
         }
+
+        private void comboBoxEnergyType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            // Ottieni il tipo di energia selezionato dalla ComboBox
+            string tipoEnergiaSelezionato = comboBoxEnergyType.SelectedItem?.ToString().Trim().ToLower();
+
+            // Filtra la lista emissionList in base al tipo di energia selezionato
+            var datiFiltrati = emissionList.Where(emission =>
+                emission.Type.Equals(tipoEnergiaSelezionato)).ToList();
+
+            // Visualizza i dati filtrati nella ListView
+            VisualizzaDatiFiltrati(datiFiltrati);
+
+        }
+
     }
 }
