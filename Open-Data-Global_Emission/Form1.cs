@@ -139,36 +139,11 @@ namespace Open_Data_Global_Emission
         {
 
         }
-        private void BtnFilterRegion_Click(object sender, EventArgs e)
+
+        // Funzione per visualizzare i dati filtrati
+        // Metodo esistente per visualizzare i dati filtrati
+        private void VisualizzaDatiFiltrati(List<EmissionData> datiFiltrati)
         {
-            // Controlla se emissionList contiene dati
-            if (emissionList == null || emissionList.Count == 0)
-            {
-                MessageBox.Show("Per favore, carica prima il file CSV.");
-                return;
-            }
-
-            // Prendi il testo inserito dall'utente
-            string regioneDaFiltrare = txtRegionFilter.Text.Trim();
-
-            if (string.IsNullOrEmpty(regioneDaFiltrare))
-            {
-                MessageBox.Show("Inserisci una regione per applicare il filtro.");
-                return;
-            }
-
-            // Filtra i dati presenti in emissionList
-            List<EmissionData> datiFiltrati = new List<EmissionData>();
-
-            foreach (var emission in emissionList)
-            {
-                if (emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase))
-                {
-                    datiFiltrati.Add(emission);
-                }
-            }
-
-            // Mostra i dati filtrati nella ListView
             listView1.Items.Clear();
 
             foreach (var emission in datiFiltrati)
@@ -185,65 +160,50 @@ namespace Open_Data_Global_Emission
                 listView1.Items.Add(item);
             }
 
-            // Mostra un messaggio se non ci sono risultati
             if (datiFiltrati.Count == 0)
             {
-                MessageBox.Show($"Nessun risultato trovato per la regione: {regioneDaFiltrare}");
+                MessageBox.Show("Nessun risultato trovato.");
             }
         }
-        private void BtnFilterCountry_Click(object sender, EventArgs e)
+        private void FiltraEVisualizzaDati()
         {
-            // Controlla se emissionList contiene dati
             if (emissionList == null || emissionList.Count == 0)
             {
                 MessageBox.Show("Per favore, carica prima il file CSV.");
                 return;
             }
 
-            // Prendi il testo inserito dall'utente per il Country
+            // Prendi i valori dai text box per ogni filtro
+            string regioneDaFiltrare = txtRegionFilter.Text.Trim();
             string countryDaFiltrare = txtCountryFilter.Text.Trim();
+            string yearDaFiltrare = txtYearFilter.Text.Trim();
 
-            if (string.IsNullOrEmpty(countryDaFiltrare))
-            {
-                MessageBox.Show("Inserisci un Paese per applicare il filtro.");
-                return;
-            }
+            // Filtra la lista in base ai campi che non sono vuoti
+            var datiFiltrati = emissionList.Where(emission =>
+                (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare))
+            ).ToList();
 
-            // Lista per memorizzare i dati filtrati
-            List<EmissionData> datiFiltrati = new List<EmissionData>();
-
-            // Ciclo for per filtrare i dati presenti in emissionList per il campo Country
-            for (int i = 0; i < emissionList.Count; i++)
-            {
-                if (emissionList[i].Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase))
-                {
-                    datiFiltrati.Add(emissionList[i]);
-                }
-            }
-
-            // Mostra i dati filtrati nella ListView
-            listView1.Items.Clear();
-
-            for (int i = 0; i < datiFiltrati.Count; i++)
-            {
-                ListViewItem item = new ListViewItem(datiFiltrati[i].Number);
-                item.SubItems.Add(datiFiltrati[i].Region);
-                item.SubItems.Add(datiFiltrati[i].Country);
-                item.SubItems.Add(datiFiltrati[i].Emissions);
-                item.SubItems.Add(datiFiltrati[i].Type);
-                item.SubItems.Add(datiFiltrati[i].Segment);
-                item.SubItems.Add(datiFiltrati[i].Reason);
-                item.SubItems.Add(datiFiltrati[i].BaseYear);
-
-                listView1.Items.Add(item);
-            }
-
-            // Mostra un messaggio se non ci sono risultati
-            if (datiFiltrati.Count == 0)
-            {
-                MessageBox.Show($"Nessun risultato trovato per il Paese: {countryDaFiltrare}");
-            }
+            // Visualizza i dati filtrati
+            VisualizzaDatiFiltrati(datiFiltrati);
         }
+
+        private void BtnFilterRegion_Click(object sender, EventArgs e)
+        {
+            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme
+        }
+
+        private void BtnFilterCountry_Click(object sender, EventArgs e)
+        {
+            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme
+        }
+
+        private void BtnFilterYear_Click(object sender, EventArgs e)
+        {
+            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme
+        }
+
         private void txtCountryFilter_TextChanged(object sender, EventArgs e)
         {
 
@@ -296,49 +256,6 @@ namespace Open_Data_Global_Emission
                 item.SubItems.Add(emissionList[i].BaseYear);
 
                 listView1.Items.Add(item);
-            }
-        }
-
-
-
-
-        private void BtnFilterYear_Click(object sender, EventArgs e)
-        {
-            // Prendi l'anno inserito nella TextBox
-            string yearDaFiltrare = txtYearFilter.Text.Trim();
-
-            if (string.IsNullOrEmpty(yearDaFiltrare))
-            {
-                MessageBox.Show("Inserisci un anno per applicare il filtro.");
-                return;
-            }
-
-            // Filtra i dati presenti in emissionList in base all'anno
-            List<EmissionData> datiFiltrati = emissionList
-                .Where(emission => emission.BaseYear != null && emission.BaseYear.Trim().Contains(yearDaFiltrare))
-                .ToList();
-
-            // Mostra i dati filtrati nella ListView
-            listView1.Items.Clear();
-
-            foreach (var emission in datiFiltrati)
-            {
-                ListViewItem item = new ListViewItem(emission.Number);
-                item.SubItems.Add(emission.Region);
-                item.SubItems.Add(emission.Country);
-                item.SubItems.Add(emission.Emissions);
-                item.SubItems.Add(emission.Type);
-                item.SubItems.Add(emission.Segment);
-                item.SubItems.Add(emission.Reason);
-                item.SubItems.Add(emission.BaseYear);
-
-                listView1.Items.Add(item);
-            }
-
-            // Mostra un messaggio se non ci sono risultati
-            if (datiFiltrati.Count == 0)
-            {
-                MessageBox.Show($"Nessun risultato trovato per l'anno: {yearDaFiltrare}");
             }
         }
 
