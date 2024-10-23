@@ -28,7 +28,7 @@ namespace Open_Data_Global_Emission
         {
             // Metodo vuoto eseguito al caricamento del form.
         }
-        
+
         private void btnVisualizzaCsv_Click(object sender, EventArgs e)
         {
             CaricaDaCsv(); // Chiama il metodo per caricare il CSV.
@@ -184,10 +184,7 @@ namespace Open_Data_Global_Emission
             var datiFiltrati = emissionList.Where(emission =>
                 (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
-                (!sogliaValida ||
-                    (double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue) &&
-                    emissionValue >= sogliaUtente * 0.8)) // Filtro soglia, se valido.
+                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare))
             ).ToList();
 
             // Visualizza i dati filtrati nella ListView.
@@ -234,34 +231,39 @@ namespace Open_Data_Global_Emission
                 return;
             }
 
-            // Prova a ordinare la lista emissionList basandosi sulla colonna Emissions.
+            // Prova a ordinare la lista emissionList basandosi sulla colonna Emissions, dopo aver fatto il parsing corretto.
             if (ordineCrescente)
             {
-                // Ordina in ordine crescente le emissioni.
-                emissionList.Sort((x, y) => x.Emissions.CompareTo(y.Emissions));
+                // Ordina in ordine crescente le emissioni (parsing corretto delle emissioni come numeri).
+                emissionList = emissionList.OrderBy(x => double.Parse(x.Emissions.Replace(",", ".").Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
             }
             else
             {
                 // Ordina in ordine decrescente le emissioni.
-                emissionList.Sort((x, y) => y.Emissions.CompareTo(x.Emissions));
+                emissionList = emissionList.OrderByDescending(x => double.Parse(x.Emissions.Replace(",", ".").Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
             }
 
             // Pulisce la ListView prima di caricare i dati ordinati.
             listView1.Items.Clear();
 
             // Aggiunge i dati ordinati alla ListView.
-            for (int i = 0; i < emissionList.Count; i++)
+            foreach (var emission in emissionList)
             {
-                ListViewItem item = new ListViewItem(emissionList[i].Number);
-                item.SubItems.Add(emissionList[i].Region);
-                item.SubItems.Add(emissionList[i].Country);
-                item.SubItems.Add(emissionList[i].Emissions);
-                item.SubItems.Add(emissionList[i].Type);
-                item.SubItems.Add(emissionList[i].Segment);
-                item.SubItems.Add(emissionList[i].Reason);
-                item.SubItems.Add(emissionList[i].BaseYear);
+                ListViewItem item = new ListViewItem(emission.Number);
+                item.SubItems.Add(emission.Region);
+                item.SubItems.Add(emission.Country);
+                item.SubItems.Add(emission.Emissions);
+                item.SubItems.Add(emission.Type);
+                item.SubItems.Add(emission.Segment);
+                item.SubItems.Add(emission.Reason);
+                item.SubItems.Add(emission.BaseYear);
 
-                listView1.Items.Add(item); // Aggiunge l'elemento ordinato alla ListView.
+                listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
+            }
+
+            foreach (ColumnHeader column in listView1.Columns)
+            {
+                column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
             }
         }
 
@@ -350,7 +352,7 @@ namespace Open_Data_Global_Emission
                 MessageBox.Show("Inserisci un valore numerico valido per la soglia.");
             }
         }
-
+        // Metodo che carica la ListView e applica la colorazione in base alla soglia
         // Metodo che carica la ListView e applica la colorazione in base alla soglia
         private void VisualizzaDatiFiltratiConSoglia(List<EmissionData> datiFiltrati, double soglia, bool sogliaValida)
         {
@@ -368,21 +370,39 @@ namespace Open_Data_Global_Emission
                 item.SubItems.Add(emission.Reason);
                 item.SubItems.Add(emission.BaseYear);
 
-                // Applica la colorazione solo se la soglia è valida.
-                if (sogliaValida && double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue))
+                // Applica la colorazione solo se la soglia è valida e maggiore di 0.
+                if (sogliaValida && soglia > 0)
                 {
-                    if (emissionValue < soglia * 0.8) // Sotto l'80% della soglia
+                    // Prova a parse il valore delle emissioni dalla stringa.
+                    if (double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue))
                     {
-                        item.BackColor = System.Drawing.Color.LightGreen;
+                        // Log temporaneo per verificare i valori delle emissioni e della soglia
+                        Debug.WriteLine($"Valore emissione: {emissionValue}, Soglia: {soglia}");
+
+                        // Applica i colori in base al valore delle emissioni rispetto alla soglia
+                        if (emissionValue < soglia * 0.8) // Sotto l'80% della soglia
+                        {
+                            item.BackColor = System.Drawing.Color.LightGreen;
+                        }
+                        else if (emissionValue >= soglia * 0.8 && emissionValue < soglia)
+                        {
+                            item.BackColor = System.Drawing.Color.Yellow;
+                        }
+                        else if (emissionValue >= soglia)
+                        {
+                            item.BackColor = System.Drawing.Color.LightCoral;
+                        }
                     }
-                    else if (emissionValue >= soglia * 0.8 && emissionValue < soglia)
+                    else
                     {
-                        item.BackColor = System.Drawing.Color.Yellow;
+                        // Se il valore delle emissioni non è valido, non applicare colorazione
+                        item.BackColor = System.Drawing.Color.White;
                     }
-                    else if (emissionValue >= soglia)
-                    {
-                        item.BackColor = System.Drawing.Color.LightCoral;
-                    }
+                }
+                else
+                {
+                    // Se la soglia non è valida o non applicabile, nessuna colorazione viene applicata.
+                    item.BackColor = System.Drawing.Color.White;
                 }
 
                 listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
@@ -392,9 +412,8 @@ namespace Open_Data_Global_Emission
             {
                 column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
             }
-
-
         }
+
 
         private void BtnResetFiltri_Click(object sender, EventArgs e)
         {
