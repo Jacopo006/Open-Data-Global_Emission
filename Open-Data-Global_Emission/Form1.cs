@@ -21,9 +21,6 @@ namespace Open_Data_Global_Emission
             listView1.ItemActivate += ListView_ItemActivate;
             listView1.FullRowSelect = true;
 
-            comboBoxEnergyType.Items.AddRange(new string[] { "Agriculture", "Energy" });
-            comboBoxEnergyType.SelectedIndex = 0;
-            comboBoxEnergyType.SelectedIndexChanged += comboBoxEnergyType_SelectedIndexChanged;
 
         }
 
@@ -178,7 +175,6 @@ namespace Open_Data_Global_Emission
             string regioneDaFiltrare = txtRegionFilter.Text.Trim();
             string countryDaFiltrare = txtCountryFilter.Text.Trim();
             string yearDaFiltrare = txtYearFilter.Text.Trim();
-            string tipoEnergiaDaFiltrare = comboBoxEnergyType.SelectedItem?.ToString().Trim();
 
             // Verifica che l'input nella textBox1 sia un valore numerico valido per la soglia.
             double sogliaUtente = 0;
@@ -189,7 +185,6 @@ namespace Open_Data_Global_Emission
                 (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
-                (string.IsNullOrEmpty(tipoEnergiaDaFiltrare) || emission.Type.Equals(tipoEnergiaDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (!sogliaValida ||
                     (double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue) &&
                     emissionValue >= sogliaUtente * 0.8)) // Filtro soglia, se valido.
@@ -334,20 +329,6 @@ namespace Open_Data_Global_Emission
             public string BaseYear { get; set; }
         }
 
-        // Gestisce il cambio di selezione della ComboBox per il tipo di energia.
-        private void comboBoxEnergyType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Ottieni il tipo di energia selezionato dalla ComboBox.
-            string tipoEnergiaSelezionato = comboBoxEnergyType.SelectedItem?.ToString().Trim().ToLower();
-
-            // Filtra la lista emissionList in base al tipo di energia selezionato.
-            var datiFiltrati = emissionList.Where(emission =>
-                emission.Type.Equals(tipoEnergiaSelezionato)).ToList();
-
-            // Visualizza i dati filtrati nella ListView.
-            VisualizzaDatiFiltrati(datiFiltrati);
-        }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -422,7 +403,6 @@ namespace Open_Data_Global_Emission
             txtCountryFilter.Text = "";  // Reset del filtro per paese.
             txtYearFilter.Text = "";  // Reset del filtro per anno.
             textBox1.Text = "";  // Reset del filtro della soglia.
-            comboBoxEnergyType.SelectedIndex = 0;  // Reset del filtro per tipo di energia alla prima voce.
 
             // Ricarica la ListView con tutti i dati non filtrati.
             CaricaNellaListView();

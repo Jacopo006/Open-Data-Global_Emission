@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
@@ -47,7 +47,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.BtnAlert = new System.Windows.Forms.Button();
-            this.comboBoxEnergyType = new System.Windows.Forms.ComboBox();
             this.BtnResetFiltri = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -57,7 +56,7 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(12, 181);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(876, 412);
@@ -239,15 +238,6 @@
             this.BtnAlert.UseVisualStyleBackColor = false;
             this.BtnAlert.Click += new System.EventHandler(this.BtnAlert_Click);
             // 
-            // comboBoxEnergyType
-            // 
-            this.comboBoxEnergyType.FormattingEnabled = true;
-            this.comboBoxEnergyType.Location = new System.Drawing.Point(461, 13);
-            this.comboBoxEnergyType.Name = "comboBoxEnergyType";
-            this.comboBoxEnergyType.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxEnergyType.TabIndex = 17;
-            this.comboBoxEnergyType.SelectedIndexChanged += new System.EventHandler(this.comboBoxEnergyType_SelectedIndexChanged);
-            // 
             // BtnResetFiltri
             // 
             this.BtnResetFiltri.BackColor = System.Drawing.Color.Red;
@@ -267,7 +257,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 605);
             this.Controls.Add(this.BtnResetFiltri);
-            this.Controls.Add(this.comboBoxEnergyType);
             this.Controls.Add(this.BtnAlert);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label4);
@@ -313,7 +302,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button BtnAlert;
-        private System.Windows.Forms.ComboBox comboBoxEnergyType;
         private System.Windows.Forms.Button BtnResetFiltri;
     }
 }
