@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
@@ -43,11 +43,12 @@
             this.BtnFilterYear = new System.Windows.Forms.Button();
             this.txtYearFilter = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.BtnCalcolaStatistiche = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.BtnAlert = new System.Windows.Forms.Button();
             this.BtnResetFiltri = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listView1
@@ -56,7 +57,7 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem3});
             this.listView1.Location = new System.Drawing.Point(12, 181);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(876, 412);
@@ -95,7 +96,7 @@
             this.txtRegionFilter.Location = new System.Drawing.Point(12, 112);
             this.txtRegionFilter.Multiline = true;
             this.txtRegionFilter.Name = "txtRegionFilter";
-            this.txtRegionFilter.Size = new System.Drawing.Size(100, 63);
+            this.txtRegionFilter.Size = new System.Drawing.Size(107, 63);
             this.txtRegionFilter.TabIndex = 3;
             this.txtRegionFilter.TextChanged += new System.EventHandler(this.txtRegionFilter_TextChanged);
             // 
@@ -123,7 +124,7 @@
             this.txtCountryFilter.Location = new System.Drawing.Point(238, 112);
             this.txtCountryFilter.Multiline = true;
             this.txtCountryFilter.Name = "txtCountryFilter";
-            this.txtCountryFilter.Size = new System.Drawing.Size(100, 63);
+            this.txtCountryFilter.Size = new System.Drawing.Size(111, 63);
             this.txtCountryFilter.TabIndex = 6;
             this.txtCountryFilter.TextChanged += new System.EventHandler(this.txtCountryFilter_TextChanged);
             // 
@@ -158,7 +159,7 @@
             this.button2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button2.Location = new System.Drawing.Point(238, 12);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(104, 67);
+            this.button2.Size = new System.Drawing.Size(111, 67);
             this.button2.TabIndex = 9;
             this.button2.Text = "Ordinamento Emissioni Crescente";
             this.button2.UseVisualStyleBackColor = false;
@@ -193,19 +194,6 @@
             this.label3.Size = new System.Drawing.Size(204, 13);
             this.label3.TabIndex = 12;
             this.label3.Text = "Inserisci la data del paese che vuoi filtrare";
-            // 
-            // BtnCalcolaStatistiche
-            // 
-            this.BtnCalcolaStatistiche.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.BtnCalcolaStatistiche.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnCalcolaStatistiche.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BtnCalcolaStatistiche.Location = new System.Drawing.Point(348, 12);
-            this.BtnCalcolaStatistiche.Name = "BtnCalcolaStatistiche";
-            this.BtnCalcolaStatistiche.Size = new System.Drawing.Size(104, 67);
-            this.BtnCalcolaStatistiche.TabIndex = 13;
-            this.BtnCalcolaStatistiche.Text = "Media Emissioni";
-            this.BtnCalcolaStatistiche.UseVisualStyleBackColor = false;
-            this.BtnCalcolaStatistiche.Click += new System.EventHandler(this.BtnCalcolaStatistiche_Click);
             // 
             // label4
             // 
@@ -251,16 +239,35 @@
             this.BtnResetFiltri.UseVisualStyleBackColor = false;
             this.BtnResetFiltri.Click += new System.EventHandler(this.BtnResetFiltri_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(355, 36);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 19;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(355, 20);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(123, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Scegli il tipo di emissione";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 605);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.BtnResetFiltri);
             this.Controls.Add(this.BtnAlert);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.BtnCalcolaStatistiche);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtYearFilter);
             this.Controls.Add(this.BtnFilterYear);
@@ -298,11 +305,12 @@
         private System.Windows.Forms.Button BtnFilterYear;
         private System.Windows.Forms.TextBox txtYearFilter;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button BtnCalcolaStatistiche;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button BtnAlert;
         private System.Windows.Forms.Button BtnResetFiltri;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label5;
     }
 }
 

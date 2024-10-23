@@ -20,7 +20,8 @@ namespace Open_Data_Global_Emission
             emissionList = new List<EmissionData>();
             listView1.ItemActivate += ListView_ItemActivate;
             listView1.FullRowSelect = true;
-
+            // Associa l'evento SelectedIndexChanged alla ComboBox
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
 
         }
 
@@ -85,6 +86,10 @@ namespace Open_Data_Global_Emission
                     }
                 }
 
+                // Popola la ComboBox con le opzioni di emissione specifiche
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(new string[] { "Agriculture", "Energy", "Other", "Waste" });
+
                 CaricaNellaListView(); // Carica i dati appena letti nella ListView.
 
                 MessageBox.Show("Dati caricati correttamente."); // Notifica all'utente che i dati sono stati caricati.
@@ -94,6 +99,8 @@ namespace Open_Data_Global_Emission
                 MessageBox.Show($"Errore durante la lettura del file: {ex.Message}");
             }
         }
+
+
 
         private void CaricaNellaListView()
         {
@@ -175,6 +182,7 @@ namespace Open_Data_Global_Emission
             string regioneDaFiltrare = txtRegionFilter.Text.Trim();
             string countryDaFiltrare = txtCountryFilter.Text.Trim();
             string yearDaFiltrare = txtYearFilter.Text.Trim();
+            string typeDaFiltrare = comboBox1.SelectedItem?.ToString(); // Ottieni il tipo selezionato dalla ComboBox
 
             // Verifica che l'input nella textBox1 sia un valore numerico valido per la soglia.
             double sogliaUtente = 0;
@@ -184,12 +192,16 @@ namespace Open_Data_Global_Emission
             var datiFiltrati = emissionList.Where(emission =>
                 (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare))
+                (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
+                (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare, StringComparison.OrdinalIgnoreCase)) // Filtro per tipo di emissione
             ).ToList();
 
             // Visualizza i dati filtrati nella ListView.
             VisualizzaDatiFiltratiConSoglia(datiFiltrati, sogliaUtente, sogliaValida);
         }
+
+
+
 
         // Gestione dei filtri per regione, paese, anno tramite pulsanti.
         private void BtnFilterRegion_Click(object sender, EventArgs e)
@@ -267,31 +279,6 @@ namespace Open_Data_Global_Emission
             foreach (ColumnHeader column in listView1.Columns)
             {
                 column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
-            }
-        }
-
-        private void BtnCalcolaStatistiche_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Calcola la somma totale delle emissioni.
-                double sommaEmissioni = emissionList.Sum(emission => double.Parse(emission.Emissions));
-
-                // Calcola la media delle emissioni.
-                double mediaEmissioni = emissionList.Average(emission => double.Parse(emission.Emissions));
-
-                // Mostra le statistiche (somma e media) all'utente tramite un messaggio.
-                MessageBox.Show($"Somma totale delle emissioni: {sommaEmissioni}\nMedia delle emissioni: {mediaEmissioni}");
-            }
-            catch (FormatException ex)
-            {
-                // Mostra un errore nel caso in cui i dati delle emissioni non siano nel formato corretto.
-                MessageBox.Show($"Errore nel calcolo delle statistiche: Formato numerico non valido. {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                // Mostra un errore generico per qualsiasi altro tipo di eccezione.
-                MessageBox.Show($"Errore nel calcolo delle statistiche: {ex.Message}");
             }
         }
 
@@ -429,6 +416,11 @@ namespace Open_Data_Global_Emission
 
             // Ricarica la ListView con tutti i dati non filtrati.
             CaricaNellaListView();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FiltraEVisualizzaDati(); // Applica il filtro ogni volta che cambia la selezione
         }
     }
 }
