@@ -195,16 +195,19 @@ namespace Open_Data_Global_Emission
         private void BtnFilterRegion_Click(object sender, EventArgs e)
         {
             FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.
+            txtRegionFilter.Text = "";
         }
 
         private void BtnFilterCountry_Click(object sender, EventArgs e)
         {
-            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.
+            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.ù
+            txtCountryFilter.Text = "";
         }
 
         private void BtnFilterYear_Click(object sender, EventArgs e)
         {
             FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.
+            txtYearFilter.Text = "";
         }
 
         private void txtCountryFilter_TextChanged(object sender, EventArgs e)
@@ -351,8 +354,9 @@ namespace Open_Data_Global_Emission
             {
                 MessageBox.Show("Inserisci un valore numerico valido per la soglia.");
             }
+            textBox1.Text = "";
         }
-        // Metodo che carica la ListView e applica la colorazione in base alla soglia
+
         // Metodo che carica la ListView e applica la colorazione in base alla soglia
         private void VisualizzaDatiFiltratiConSoglia(List<EmissionData> datiFiltrati, double soglia, bool sogliaValida)
         {
