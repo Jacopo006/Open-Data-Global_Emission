@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
@@ -48,6 +48,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.BtnAlert = new System.Windows.Forms.Button();
             this.comboBoxEnergyType = new System.Windows.Forms.ComboBox();
+            this.BtnResetFiltri = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -56,7 +57,7 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
+            listViewItem1});
             this.listView1.Location = new System.Drawing.Point(12, 181);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(876, 412);
@@ -223,6 +224,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 63);
             this.textBox1.TabIndex = 15;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // BtnAlert
             // 
@@ -246,11 +248,25 @@
             this.comboBoxEnergyType.TabIndex = 17;
             this.comboBoxEnergyType.SelectedIndexChanged += new System.EventHandler(this.comboBoxEnergyType_SelectedIndexChanged);
             // 
+            // BtnResetFiltri
+            // 
+            this.BtnResetFiltri.BackColor = System.Drawing.Color.Red;
+            this.BtnResetFiltri.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnResetFiltri.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BtnResetFiltri.Location = new System.Drawing.Point(784, 12);
+            this.BtnResetFiltri.Name = "BtnResetFiltri";
+            this.BtnResetFiltri.Size = new System.Drawing.Size(104, 63);
+            this.BtnResetFiltri.TabIndex = 18;
+            this.BtnResetFiltri.Text = "Resetta filtri";
+            this.BtnResetFiltri.UseVisualStyleBackColor = false;
+            this.BtnResetFiltri.Click += new System.EventHandler(this.BtnResetFiltri_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 605);
+            this.Controls.Add(this.BtnResetFiltri);
             this.Controls.Add(this.comboBoxEnergyType);
             this.Controls.Add(this.BtnAlert);
             this.Controls.Add(this.textBox1);
@@ -271,6 +287,7 @@
             this.Controls.Add(this.listView1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -297,6 +314,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button BtnAlert;
         private System.Windows.Forms.ComboBox comboBoxEnergyType;
+        private System.Windows.Forms.Button BtnResetFiltri;
     }
 }
 

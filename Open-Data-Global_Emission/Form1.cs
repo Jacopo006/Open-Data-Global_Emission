@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,28 +12,26 @@ namespace Open_Data_Global_Emission
     public partial class Form1 : Form
     {
         private List<EmissionData> emissionList; // Lista che conterrà i dati caricati dal CSV.
-        private const double SogliaEmissioni = 100000; // Definisce una soglia d'allerta per le emissioni (ad esempio 100000).
+        private const double SogliaEmissioni = 128.42; // Soglia aggiornata dinamicamente.
 
         public Form1()
         {
-            InitializeComponent(); // Inizializza i componenti della finestra.
-            emissionList = new List<EmissionData>(); // Inizializza la lista delle emissioni vuota.
-            listView1.ItemActivate += ListView_ItemActivate; // Aggiunge un handler per l'evento di selezione di un item nella ListView.
-            listView1.FullRowSelect = true; // Configura la ListView per selezionare intere righe.
+            InitializeComponent();
+            emissionList = new List<EmissionData>();
+            listView1.ItemActivate += ListView_ItemActivate;
+            listView1.FullRowSelect = true;
 
-            // Aggiunge i tipi di energia alla ComboBox.
             comboBoxEnergyType.Items.AddRange(new string[] { "Agriculture", "Energy" });
-            comboBoxEnergyType.SelectedIndex = 0; // Seleziona il primo elemento della ComboBox di default.
-
-            // Collega l'evento di cambio selezione della ComboBox al metodo corrispondente.
+            comboBoxEnergyType.SelectedIndex = 0;
             comboBoxEnergyType.SelectedIndexChanged += comboBoxEnergyType_SelectedIndexChanged;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // Metodo vuoto eseguito al caricamento del form.
         }
-
+        
         private void btnVisualizzaCsv_Click(object sender, EventArgs e)
         {
             CaricaDaCsv(); // Chiama il metodo per caricare il CSV.
@@ -101,7 +100,7 @@ namespace Open_Data_Global_Emission
 
         private void CaricaNellaListView()
         {
-            listView1.View = View.Details; // Configura la ListView per mostrare i dettagli.
+            listView1.View = View.Details;
 
             listView1.Items.Clear(); // Pulisce gli elementi esistenti nella ListView.
             listView1.Columns.Clear(); // Pulisce le colonne esistenti nella ListView.
@@ -116,10 +115,6 @@ namespace Open_Data_Global_Emission
             listView1.Columns.Add("reason", 100);
             listView1.Columns.Add("baseYear", 100);
 
-            // Verifica il numero di colonne aggiunte (debug).
-            Console.WriteLine($"Numero di colonne: {listView1.Columns.Count}");
-
-            // Aggiunge i dati della lista emissionList alla ListView.
             foreach (var emission in emissionList)
             {
                 ListViewItem item = new ListViewItem(emission.Number);
@@ -134,14 +129,12 @@ namespace Open_Data_Global_Emission
                 listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
             }
 
-            // Imposta la larghezza delle colonne in base al contenuto.
             foreach (ColumnHeader column in listView1.Columns)
             {
                 column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
             }
         }
 
-        // Metodo vuoto che gestisce la selezione di un elemento nella ListView (potenzialmente per estendere funzionalità).
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
@@ -187,16 +180,23 @@ namespace Open_Data_Global_Emission
             string yearDaFiltrare = txtYearFilter.Text.Trim();
             string tipoEnergiaDaFiltrare = comboBoxEnergyType.SelectedItem?.ToString().Trim();
 
+            // Verifica che l'input nella textBox1 sia un valore numerico valido per la soglia.
+            double sogliaUtente = 0;
+            bool sogliaValida = double.TryParse(textBox1.Text, out sogliaUtente);
+
             // Filtra la lista emissionList in base ai valori inseriti dall'utente.
             var datiFiltrati = emissionList.Where(emission =>
                 (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
-                (string.IsNullOrEmpty(tipoEnergiaDaFiltrare) || emission.Type.Equals(tipoEnergiaDaFiltrare, StringComparison.OrdinalIgnoreCase))
+                (string.IsNullOrEmpty(tipoEnergiaDaFiltrare) || emission.Type.Equals(tipoEnergiaDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
+                (!sogliaValida ||
+                    (double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue) &&
+                    emissionValue >= sogliaUtente * 0.8)) // Filtro soglia, se valido.
             ).ToList();
 
             // Visualizza i dati filtrati nella ListView.
-            VisualizzaDatiFiltrati(datiFiltrati);
+            VisualizzaDatiFiltratiConSoglia(datiFiltrati, sogliaUtente, sogliaValida);
         }
 
         // Gestione dei filtri per regione, paese, anno tramite pulsanti.
@@ -300,24 +300,6 @@ namespace Open_Data_Global_Emission
             // Metodo vuoto per la gestione di un clic su una label.
         }
 
-        private void BtnAlert_Click(object sender, EventArgs e)
-        {
-            // Filtra le regioni che hanno emissioni superiori alla soglia definita (SogliaEmissioni).
-            var regioniAllerta = emissionList.Where(emission =>
-                double.TryParse(emission.Emissions, out double emissionValue) && emissionValue > SogliaEmissioni).ToList();
-
-            if (regioniAllerta.Count == 0)
-            {
-                // Se nessuna regione supera la soglia, notifica l'utente.
-                MessageBox.Show($"Nessuna regione ha superato la soglia di {SogliaEmissioni}.");
-            }
-            else
-            {
-                // Se ci sono regioni che superano la soglia, visualizza i dati filtrati nella ListView.
-                VisualizzaDatiFiltrati(regioniAllerta);
-            }
-        }
-
         private void ListView_ItemActivate(object sender, EventArgs e)
         {
             // Verifica se c'è un elemento selezionato nella ListView.
@@ -364,6 +346,86 @@ namespace Open_Data_Global_Emission
 
             // Visualizza i dati filtrati nella ListView.
             VisualizzaDatiFiltrati(datiFiltrati);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
+        }
+        private void BtnAlert_Click(object sender, EventArgs e)
+        {
+            // Verifica che l'input nella textBox1 sia un valore numerico valido.
+            if (double.TryParse(textBox1.Text, out double sogliaUtente))
+            {
+                FiltraEVisualizzaDati(); // Applica tutti i filtri inclusa la soglia.
+            }
+            else
+            {
+                MessageBox.Show("Inserisci un valore numerico valido per la soglia.");
+            }
+        }
+
+        // Metodo che carica la ListView e applica la colorazione in base alla soglia
+        private void VisualizzaDatiFiltratiConSoglia(List<EmissionData> datiFiltrati, double soglia, bool sogliaValida)
+        {
+            listView1.Items.Clear(); // Pulisce gli elementi esistenti nella ListView.
+
+            foreach (var emission in datiFiltrati)
+            {
+                // Aggiunge i dati filtrati nella ListView.
+                ListViewItem item = new ListViewItem(emission.Number);
+                item.SubItems.Add(emission.Region);
+                item.SubItems.Add(emission.Country);
+                item.SubItems.Add(emission.Emissions);
+                item.SubItems.Add(emission.Type);
+                item.SubItems.Add(emission.Segment);
+                item.SubItems.Add(emission.Reason);
+                item.SubItems.Add(emission.BaseYear);
+
+                // Applica la colorazione solo se la soglia è valida.
+                if (sogliaValida && double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue))
+                {
+                    if (emissionValue < soglia * 0.8) // Sotto l'80% della soglia
+                    {
+                        item.BackColor = System.Drawing.Color.LightGreen;
+                    }
+                    else if (emissionValue >= soglia * 0.8 && emissionValue < soglia)
+                    {
+                        item.BackColor = System.Drawing.Color.Yellow;
+                    }
+                    else if (emissionValue >= soglia)
+                    {
+                        item.BackColor = System.Drawing.Color.LightCoral;
+                    }
+                }
+
+                listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
+            }
+
+            foreach (ColumnHeader column in listView1.Columns)
+            {
+                column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
+            }
+
+
+        }
+
+        private void BtnResetFiltri_Click(object sender, EventArgs e)
+        {
+            // Resetta tutti i filtri di input.
+            txtRegionFilter.Text = "";  // Reset del filtro per regione.
+            txtCountryFilter.Text = "";  // Reset del filtro per paese.
+            txtYearFilter.Text = "";  // Reset del filtro per anno.
+            textBox1.Text = "";  // Reset del filtro della soglia.
+            comboBoxEnergyType.SelectedIndex = 0;  // Reset del filtro per tipo di energia alla prima voce.
+
+            // Ricarica la ListView con tutti i dati non filtrati.
+            CaricaNellaListView();
         }
     }
 }
