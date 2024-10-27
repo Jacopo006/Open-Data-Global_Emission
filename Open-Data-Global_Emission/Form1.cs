@@ -223,14 +223,15 @@ namespace Open_Data_Global_Emission
             // Prova a ordinare la lista emissionList basandosi sulla colonna Emissions, dopo aver fatto il parsing corretto.
             if (ordineCrescente)
             {
-                // Ordina in ordine crescente le emissioni (parsing corretto delle emissioni come numeri).
-                emissionList = emissionList.OrderBy(x => double.Parse(x.Emissions.Replace(",", ".").Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
+                // Ordina in ordine crescente le emissioni.
+                emissionList = emissionList.OrderBy(x => double.Parse(x.Emissions.Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
             }
             else
             {
                 // Ordina in ordine decrescente le emissioni.
-                emissionList = emissionList.OrderByDescending(x => double.Parse(x.Emissions.Replace(",", ".").Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
+                emissionList = emissionList.OrderByDescending(x => double.Parse(x.Emissions.Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
             }
+
 
             // Pulisce la ListView prima di caricare i dati ordinati.
             listView1.Items.Clear();
@@ -258,7 +259,7 @@ namespace Open_Data_Global_Emission
 
         private void label1_Click(object sender, EventArgs e)
         {
-            // Metodo vuoto per la gestione di un clic su una label.
+            
         }
 
         private void ListView_ItemActivate(object sender, EventArgs e)
@@ -341,8 +342,6 @@ namespace Open_Data_Global_Emission
                     // Prova a parse il valore delle emissioni dalla stringa.
                     if (double.TryParse(emission.Emissions.Replace(",", ".").Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double emissionValue))
                     {
-                        // Log temporaneo per verificare i valori delle emissioni e della soglia
-                        Debug.WriteLine($"Valore emissione: {emissionValue}, Soglia: {soglia}");
 
                         // Applica i colori in base al valore delle emissioni rispetto alla soglia
                         if (emissionValue < soglia * 0.8) // Sotto l'80% della soglia
