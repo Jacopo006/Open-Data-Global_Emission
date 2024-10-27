@@ -164,8 +164,8 @@ namespace Open_Data_Global_Emission
 
             // Filtra la lista emissionList in base ai valori inseriti dall'utente.
             var datiFiltrati = emissionList.Where(emission =>
-                (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare)) &&
+                (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare)) &&
                 (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
                 (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare, StringComparison.OrdinalIgnoreCase)) // Filtro per tipo di emissione
             ).ToList();
