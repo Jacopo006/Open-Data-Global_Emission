@@ -132,11 +132,6 @@ namespace Open_Data_Global_Emission
 
                 listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
             }
-
-            foreach (ColumnHeader column in listView1.Columns)
-            {
-                column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
-            }
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -146,27 +141,6 @@ namespace Open_Data_Global_Emission
         private void txtRegionFilter_TextChanged(object sender, EventArgs e)
         {
             // Metodo vuoto collegato al campo filtro "Regione".
-        }
-
-        // Funzione per visualizzare i dati filtrati nella ListView.
-        private void VisualizzaDatiFiltrati(List<EmissionData> datiFiltrati)
-        {
-            listView1.Items.Clear(); // Pulisce gli elementi esistenti nella ListView.
-
-            foreach (var emission in datiFiltrati)
-            {
-                // Aggiunge i dati filtrati nella ListView.
-                ListViewItem item = new ListViewItem(emission.Number);
-                item.SubItems.Add(emission.Region);
-                item.SubItems.Add(emission.Country);
-                item.SubItems.Add(emission.Emissions);
-                item.SubItems.Add(emission.Type);
-                item.SubItems.Add(emission.Segment);
-                item.SubItems.Add(emission.Reason);
-                item.SubItems.Add(emission.BaseYear);
-
-                listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
-            }
         }
 
         // Metodo che gestisce l'applicazione dei filtri e visualizza i dati filtrati.
