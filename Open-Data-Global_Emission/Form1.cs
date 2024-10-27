@@ -167,7 +167,7 @@ namespace Open_Data_Global_Emission
                 (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare)) &&
                 (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare)) &&
                 (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
-                (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare, StringComparison.OrdinalIgnoreCase)) // Filtro per tipo di emissione
+                (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare)) // Filtro per tipo di emissione
             ).ToList();
 
             // Visualizza i dati filtrati nella ListView.
