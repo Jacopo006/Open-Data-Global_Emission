@@ -28,27 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnVisualizzaCsv = new System.Windows.Forms.Button();
             this.BtnFilterRegion = new System.Windows.Forms.Button();
             this.txtRegionFilter = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.txtCountryFilter = new System.Windows.Forms.TextBox();
             this.BtnFilterCountry = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.BtnFilterYear = new System.Windows.Forms.Button();
             this.txtYearFilter = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.BtnAlert = new System.Windows.Forms.Button();
             this.BtnResetFiltri = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listView1
@@ -57,10 +52,10 @@
             this.columnHeader1});
             this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem1});
             this.listView1.Location = new System.Drawing.Point(12, 181);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(876, 412);
+            this.listView1.Size = new System.Drawing.Size(549, 168);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
@@ -99,25 +94,6 @@
             this.txtRegionFilter.Size = new System.Drawing.Size(107, 63);
             this.txtRegionFilter.TabIndex = 3;
             this.txtRegionFilter.TextChanged += new System.EventHandler(this.txtRegionFilter_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 96);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(219, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Inserisci il nome della regione che vuoi filtrare";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(238, 96);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Inserisci il nome del paese che vuoi filtrare";
             // 
             // txtCountryFilter
             // 
@@ -186,24 +162,6 @@
             this.txtYearFilter.Size = new System.Drawing.Size(100, 63);
             this.txtYearFilter.TabIndex = 11;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(458, 96);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(204, 13);
-            this.label3.TabIndex = 12;
-            this.label3.Text = "Inserisci la data del paese che vuoi filtrare";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(677, 96);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(160, 13);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "Inserisci la soglia d\'allerta minima";
-            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(680, 112);
@@ -242,41 +200,27 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(355, 36);
+            this.comboBox1.Location = new System.Drawing.Point(400, 35);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 19;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(355, 20);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(123, 13);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Scegli il tipo di emissione";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 605);
-            this.Controls.Add(this.label5);
+            this.ClientSize = new System.Drawing.Size(952, 458);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.BtnResetFiltri);
             this.Controls.Add(this.BtnAlert);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtYearFilter);
             this.Controls.Add(this.BtnFilterYear);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtCountryFilter);
             this.Controls.Add(this.BtnFilterCountry);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.txtRegionFilter);
             this.Controls.Add(this.BtnFilterRegion);
             this.Controls.Add(this.btnVisualizzaCsv);
@@ -296,21 +240,16 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button BtnFilterRegion;
         private System.Windows.Forms.TextBox txtRegionFilter;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtCountryFilter;
         private System.Windows.Forms.Button BtnFilterCountry;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button BtnFilterYear;
         private System.Windows.Forms.TextBox txtYearFilter;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button BtnAlert;
         private System.Windows.Forms.Button BtnResetFiltri;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label5;
     }
 }
 
