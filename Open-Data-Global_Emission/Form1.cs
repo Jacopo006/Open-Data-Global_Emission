@@ -247,54 +247,61 @@ namespace Open_Data_Global_Emission
         }
 
         // Metodo che gestisce l'applicazione dei filtri e visualizza i dati filtrati.
-        private void FiltraEVisualizzaDati()
+        private void FiltraEOrdinaDati(bool ordineCrescente = true)
         {
-            if (emissionList == null || emissionList.Count == 0) // Controlla se la lista emissionList è vuota.
+            if (emissionList == null || emissionList.Count == 0)
             {
                 MessageBox.Show("Per favore, carica prima il file CSV.");
                 return;
             }
 
-            // Prende i valori dai text box e dalla ComboBox per ogni filtro.
+            // Prende i valori dai text box e dalla ComboBox per ogni filtro
             string regioneDaFiltrare = txtRegionFilter.Text.Trim();
             string countryDaFiltrare = txtCountryFilter.Text.Trim();
             string yearDaFiltrare = txtYearFilter.Text.Trim();
-            string typeDaFiltrare = comboBox1.SelectedItem?.ToString(); // Ottieni il tipo selezionato dalla ComboBox
+            string typeDaFiltrare = comboBox1.SelectedItem?.ToString();
 
-            // Verifica che l'input nella textBox1 sia un valore numerico valido per la soglia.
+            // Verifica che l'input nella textBox1 sia un valore numerico valido per la soglia
             double sogliaUtente = 0;
             bool sogliaValida = double.TryParse(textBox1.Text, out sogliaUtente);
 
-            // Filtra la lista emissionList in base ai valori inseriti dall'utente.
+            // Filtra la lista emissionList in base ai valori inseriti dall'utente
             var datiFiltrati = emissionList.Where(emission =>
-                (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare)) &&
-                (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare)) &&
+                (string.IsNullOrEmpty(regioneDaFiltrare) || emission.Region.Equals(regioneDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(countryDaFiltrare) || emission.Country.Equals(countryDaFiltrare, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(yearDaFiltrare) || emission.BaseYear.Contains(yearDaFiltrare)) &&
-                (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare)) // Filtro per tipo di emissione
+                (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare, StringComparison.OrdinalIgnoreCase))
             ).ToList();
 
-            // Visualizza i dati filtrati nella ListView.
+            
+            // Ordina i dati filtrati
+            if (ordineCrescente)
+            {
+                datiFiltrati = datiFiltrati.OrderBy(x => double.Parse(x.Emissions.Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
+            }
+            else
+            {
+                datiFiltrati = datiFiltrati.OrderByDescending(x => double.Parse(x.Emissions.Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
+            }
+
+            // Visualizza i dati filtrati e ordinati nella ListView
             VisualizzaDatiFiltratiConSoglia(datiFiltrati, sogliaUtente, sogliaValida);
         }
 
 
-        // Gestione dei filtri per regione, paese, anno tramite pulsanti.
         private void BtnFilterRegion_Click(object sender, EventArgs e)
         {
-            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.
-            txtRegionFilter.Text = "";
+            FiltraEOrdinaDati(); // Applica i filtri e ordina in ordine crescente (predefinito)
         }
 
         private void BtnFilterCountry_Click(object sender, EventArgs e)
         {
-            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.ù
-            txtCountryFilter.Text = "";
+            FiltraEOrdinaDati(); // Applica i filtri e ordina in ordine crescente (predefinito)
         }
 
         private void BtnFilterYear_Click(object sender, EventArgs e)
         {
-            FiltraEVisualizzaDati(); // Applica tutti i filtri insieme.
-            txtYearFilter.Text = "";
+            FiltraEOrdinaDati(); // Applica i filtri e ordina in ordine crescente (predefinito)
         }
 
         private void txtCountryFilter_TextChanged(object sender, EventArgs e)
@@ -302,62 +309,15 @@ namespace Open_Data_Global_Emission
             // Metodo vuoto per il filtro del paese.
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            OrdinaPerEmissioni(true); // Ordina la lista emissionList in ordine crescente in base alle emissioni.
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
-            OrdinaPerEmissioni(false); // Ordina la lista emissionList in ordine decrescente in base alle emissioni.
+            FiltraEOrdinaDati(false); // Ordina in ordine decrescente
         }
 
-        private void OrdinaPerEmissioni(bool ordineCrescente)
+        private void button2_Click(object sender, EventArgs e)
         {
-            // Controlla se emissionList contiene dati prima di applicare l'ordinamento.
-            if (emissionList == null || emissionList.Count == 0)
-            {
-                MessageBox.Show("Per favore, carica prima il file CSV.");
-                return;
-            }
-
-            // Prova a ordinare la lista emissionList basandosi sulla colonna Emissions, dopo aver fatto il parsing corretto.
-            if (ordineCrescente)
-            {
-                // Ordina in ordine crescente le emissioni.
-                emissionList = emissionList.OrderBy(x => double.Parse(x.Emissions.Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
-            }
-            else
-            {
-                // Ordina in ordine decrescente le emissioni.
-                emissionList = emissionList.OrderByDescending(x => double.Parse(x.Emissions.Trim(), System.Globalization.CultureInfo.InvariantCulture)).ToList();
-            }
-
-
-            // Pulisce la ListView prima di caricare i dati ordinati.
-            listView1.Items.Clear();
-
-            // Aggiunge i dati ordinati alla ListView.
-            foreach (var emission in emissionList)
-            {
-                ListViewItem item = new ListViewItem(emission.Number);
-                item.SubItems.Add(emission.Region);
-                item.SubItems.Add(emission.Country);
-                item.SubItems.Add(emission.Emissions);
-                item.SubItems.Add(emission.Type);
-                item.SubItems.Add(emission.Segment);
-                item.SubItems.Add(emission.Reason);
-                item.SubItems.Add(emission.BaseYear);
-
-                listView1.Items.Add(item); // Aggiunge l'elemento alla ListView.
-            }
-
-            foreach (ColumnHeader column in listView1.Columns)
-            {
-                column.Width = -2; // Auto-adeguamento delle colonne al contenuto.
-            }
+            FiltraEOrdinaDati(true); // Ordina in ordine crescente
         }
-
         private void label1_Click(object sender, EventArgs e)
         {
             
@@ -408,10 +368,10 @@ namespace Open_Data_Global_Emission
         }
         private void BtnAlert_Click(object sender, EventArgs e)
         {
-            // Verifica che l'input nella textBox1 sia un valore numerico valido.
+            // Verifica che l'input nella textBox1 sia un valore numerico valido
             if (double.TryParse(textBox1.Text, out double sogliaUtente))
             {
-                FiltraEVisualizzaDati(); // Applica tutti i filtri inclusa la soglia.
+                FiltraEOrdinaDati(); // Applica tutti i filtri inclusa la soglia
             }
             else
             {
@@ -494,7 +454,7 @@ namespace Open_Data_Global_Emission
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FiltraEVisualizzaDati(); // Applica il filtro ogni volta che cambia la selezione
+            FiltraEOrdinaDati(); // Applica il filtro ogni volta che cambia la selezione
         }
     }
 }
