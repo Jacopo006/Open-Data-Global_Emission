@@ -25,30 +25,29 @@ namespace Open_Data_Global_Emission
             InitializeCustomStyles();
             
         }
-
         private void InitializeCustomStyles()
         {
             // Imposta lo stile generale del form
             this.BackColor = Color.WhiteSmoke;
             this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
 
-            // Pulsanti principali e ComboBox in alto
+            // Pulsanti principali nella parte superiore
             StilePulsante(btnVisualizzaCsv, "Visualizza CSV", Color.FromArgb(63, 81, 181), new Point(20, 20));
-            StilePulsante(button1, "Ordina Crescente", Color.FromArgb(76, 175, 80), new Point(180, 20));
-            StilePulsante(button2, "Ordina Decrescente", Color.FromArgb(244, 67, 54), new Point(340, 20));
-            StilePulsante(BtnResetFiltri, "Reset Filtri", Color.FromArgb(220, 220, 220), new Point(500, 20), Color.Black);
+            StilePulsante(button1, "Ordina Crescente", Color.FromArgb(76, 175, 80), new Point(200, 20));
+            StilePulsante(button2, "Ordina Decrescente", Color.FromArgb(244, 67, 54), new Point(380, 20));
+            StilePulsante(BtnResetFiltri, "Reset Filtri", Color.FromArgb(220, 220, 220), new Point(560, 20), Color.Black);
 
-            // Posiziona la ComboBox accanto ai pulsanti
+            // ComboBox accanto ai pulsanti
             comboBox1.BackColor = Color.White;
             comboBox1.FlatStyle = FlatStyle.Flat;
-            comboBox1.Location = new Point(660, 25); // Posizione accanto ai pulsanti
-            comboBox1.Size = new Size(180, 30); // Dimensiona la ComboBox
+            comboBox1.Location = new Point(740, 25);
+            comboBox1.Size = new Size(150, 30);
 
-            // Etichette per i campi di filtro
+            // Etichette per i campi di filtro sotto i pulsanti principali
             Label lblRegionFilter = new Label
             {
                 Text = "Filtro Regione:",
-                Location = new Point(20, 80),
+                Location = new Point(20, 70),
                 AutoSize = true
             };
             this.Controls.Add(lblRegionFilter);
@@ -56,7 +55,7 @@ namespace Open_Data_Global_Emission
             Label lblCountryFilter = new Label
             {
                 Text = "Filtro Paese:",
-                Location = new Point(240, 80),
+                Location = new Point(240, 70),
                 AutoSize = true
             };
             this.Controls.Add(lblCountryFilter);
@@ -64,7 +63,7 @@ namespace Open_Data_Global_Emission
             Label lblYearFilter = new Label
             {
                 Text = "Filtro Anno:",
-                Location = new Point(460, 80),
+                Location = new Point(460, 70),
                 AutoSize = true
             };
             this.Controls.Add(lblYearFilter);
@@ -72,35 +71,35 @@ namespace Open_Data_Global_Emission
             Label lblSoglia = new Label
             {
                 Text = "Soglia Emissioni:",
-                Location = new Point(680, 80),
+                Location = new Point(680, 70),
                 AutoSize = true
             };
             this.Controls.Add(lblSoglia);
 
-            // Stile e posizione delle TextBox
+            // TextBox per i filtri
             txtRegionFilter.BorderStyle = BorderStyle.FixedSingle;
-            txtRegionFilter.Location = new Point(20, 110);
-            txtRegionFilter.Size = new Size(200, 30); // Dimensiona la TextBox
+            txtRegionFilter.Location = new Point(20, 100);
+            txtRegionFilter.Size = new Size(200, 30);
 
             txtCountryFilter.BorderStyle = BorderStyle.FixedSingle;
-            txtCountryFilter.Location = new Point(240, 110);
-            txtCountryFilter.Size = new Size(200, 30); // Dimensiona la TextBox
+            txtCountryFilter.Location = new Point(240, 100);
+            txtCountryFilter.Size = new Size(200, 30);
 
             txtYearFilter.BorderStyle = BorderStyle.FixedSingle;
-            txtYearFilter.Location = new Point(460, 110);
-            txtYearFilter.Size = new Size(200, 30); // Dimensiona la TextBox
+            txtYearFilter.Location = new Point(460, 100);
+            txtYearFilter.Size = new Size(200, 30);
 
             textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Location = new Point(680, 110);
-            textBox1.Size = new Size(160, 30); // Dimensiona la TextBox
+            textBox1.Location = new Point(680, 100);
+            textBox1.Size = new Size(160, 30);
 
             // Bottoni di filtro sotto le TextBox
-            StilePulsante(BtnFilterRegion, "Filtra", Color.Blue, new Point(20, 150));
-            StilePulsante(BtnFilterCountry, "Filtra", Color.Blue, new Point(240, 150));
-            StilePulsante(BtnFilterYear, "Filtra", Color.Blue, new Point(460, 150));
-            StilePulsante(BtnAlert, "Soglia", Color.Blue, new Point(680, 150));
+            StilePulsante(BtnFilterRegion, "Filtra", Color.Blue, new Point(20, 140));
+            StilePulsante(BtnFilterCountry, "Filtra", Color.Blue, new Point(240, 140));
+            StilePulsante(BtnFilterYear, "Filtra", Color.Blue, new Point(460, 140));
+            StilePulsante(BtnAlert, "Soglia", Color.Blue, new Point(680, 140));
 
-            // ListView in basso
+            // Abbassa la ListView per lasciare spazio ai filtri
             listView1.View = View.Details;
             listView1.BackColor = Color.White;
             listView1.ForeColor = Color.Black;
@@ -108,8 +107,9 @@ namespace Open_Data_Global_Emission
             listView1.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             listView1.GridLines = true;
             listView1.FullRowSelect = true;
-            listView1.Location = new Point(20, 200); // Posiziona la ListView sotto tutto
-            listView1.Size = new Size(820, 300); // Dimensiona la ListView
+            listView1.Location = new Point(20, 190); // Abbassa la ListView per lasciare spazio ai filtri
+            listView1.Size = new Size(880, 300);
+            this.Controls.Add(listView1);
         }
 
         // Metodo per applicare lo stile e la posizione ai pulsanti esistenti
@@ -121,14 +121,11 @@ namespace Open_Data_Global_Emission
             button.ForeColor = foreColor ?? Color.White;
             button.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             button.Text = text;
-            button.Size = new Size(140, 40); // Dimensiona il pulsante
-            button.Location = location; // Posizione del pulsante
+            button.Size = new Size(140, 40);
+            button.Location = location;
             button.TextAlign = ContentAlignment.MiddleCenter;
+            this.Controls.Add(button);
         }
-
-
-
-
 
 
         private void Form1_Load(object sender, EventArgs e)
