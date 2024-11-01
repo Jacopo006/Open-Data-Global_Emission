@@ -22,7 +22,53 @@ namespace Open_Data_Global_Emission
             listView1.FullRowSelect = true;
             // Associa l'evento SelectedIndexChanged alla ComboBox
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+             InitializeCustomStyles();
+        }
+        private void InitializeCustomStyles()
+        {
+            // Imposta lo stile generale del form
+            this.BackColor = Color.WhiteSmoke;
+            this.Font = new Font("Segoe UI", 10, FontStyle.Regular);
 
+            // Stile della ListView
+            listView1.View = View.Details;
+            listView1.BackColor = Color.White;
+            listView1.ForeColor = Color.Black;
+            listView1.BorderStyle = BorderStyle.None;
+            listView1.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            listView1.GridLines = true;
+            listView1.FullRowSelect = true;
+
+            // Stile dei pulsanti
+            btnVisualizzaCsv.FlatStyle = FlatStyle.Flat;
+            btnVisualizzaCsv.BackColor = Color.FromArgb(63, 81, 181); // Blu moderno
+            btnVisualizzaCsv.ForeColor = Color.White;
+            btnVisualizzaCsv.FlatAppearance.BorderSize = 0;
+
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.BackColor = Color.FromArgb(76, 175, 80); // Verde moderno
+            button1.ForeColor = Color.White;
+            button1.FlatAppearance.BorderSize = 0;
+
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.BackColor = Color.FromArgb(244, 67, 54); // Rosso moderno
+            button2.ForeColor = Color.White;
+            button2.FlatAppearance.BorderSize = 0;
+
+            BtnResetFiltri.FlatStyle = FlatStyle.Flat;
+            BtnResetFiltri.BackColor = Color.FromArgb(220, 220, 220); // Grigio chiaro
+            BtnResetFiltri.ForeColor = Color.Black;
+            BtnResetFiltri.FlatAppearance.BorderSize = 0;
+
+            // Stile della ComboBox
+            comboBox1.BackColor = Color.White;
+            comboBox1.FlatStyle = FlatStyle.Flat;
+
+            // Stile delle TextBox
+            txtRegionFilter.BorderStyle = BorderStyle.FixedSingle;
+            txtCountryFilter.BorderStyle = BorderStyle.FixedSingle;
+            txtYearFilter.BorderStyle = BorderStyle.FixedSingle;
+            textBox1.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -173,8 +219,6 @@ namespace Open_Data_Global_Emission
             // Visualizza i dati filtrati nella ListView.
             VisualizzaDatiFiltratiConSoglia(datiFiltrati, sogliaUtente, sogliaValida);
         }
-
-
 
 
         // Gestione dei filtri per regione, paese, anno tramite pulsanti.
