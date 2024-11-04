@@ -44,21 +44,21 @@ namespace Open_Data_Global_Emission
             comboBox1.Size = new Size(150, 30);
 
             // Etichette per i campi di filtro sotto i pulsanti principali
-            Label lblRegionFilter = new Label
-            {
-                Text = "Filtro Regione:",
-                Location = new Point(20, 70),
-                AutoSize = true
-            };
-            this.Controls.Add(lblRegionFilter);
-
             Label lblCountryFilter = new Label
             {
                 Text = "Filtro Paese:",
-                Location = new Point(240, 70),
+                Location = new Point(20, 70), // Cambiato a sinistra
                 AutoSize = true
             };
             this.Controls.Add(lblCountryFilter);
+
+            Label lblRegionFilter = new Label
+            {
+                Text = "Filtro Regione:",
+                Location = new Point(240, 70), // Cambiato a destra
+                AutoSize = true
+            };
+            this.Controls.Add(lblRegionFilter);
 
             Label lblYearFilter = new Label
             {
@@ -174,12 +174,12 @@ namespace Open_Data_Global_Emission
                             continue; // Salta le righe con un numero di colonne errato.
                         }
 
-                        // Aggiunge i dati alla lista emissionList.
+                        // Aggiunge i dati alla lista emissionList con Region e Country in lowercase.
                         emissionList.Add(new EmissionData
                         {
                             Number = campo[0].Trim(),
-                            Region = campo[1].Trim(),
-                            Country = campo[2].Trim(),
+                            Region = campo[1].Trim().ToLower(), // Converte in minuscolo
+                            Country = campo[2].Trim().ToLower(), // Converte in minuscolo
                             Emissions = campo[3].Trim(),
                             Type = campo[4].Trim(),
                             Segment = campo[5].Trim(),
@@ -245,6 +245,10 @@ namespace Open_Data_Global_Emission
         {
             // Metodo vuoto collegato al campo filtro "Regione".
         }
+        private void txtCountryFilter_TextChanged(object sender, EventArgs e)
+        {
+            // Metodo vuoto per il filtro del paese.
+        }
 
         // Metodo che gestisce l'applicazione dei filtri e visualizza i dati filtrati.
         private void FiltraEOrdinaDati(bool ordineCrescente = true)
@@ -273,7 +277,6 @@ namespace Open_Data_Global_Emission
                 (string.IsNullOrEmpty(typeDaFiltrare) || emission.Type.Equals(typeDaFiltrare, StringComparison.OrdinalIgnoreCase))
             ).ToList();
 
-            
             // Ordina i dati filtrati
             if (ordineCrescente)
             {
@@ -304,11 +307,7 @@ namespace Open_Data_Global_Emission
             FiltraEOrdinaDati(); // Applica i filtri e ordina in ordine crescente (predefinito)
         }
 
-        private void txtCountryFilter_TextChanged(object sender, EventArgs e)
-        {
-            // Metodo vuoto per il filtro del paese.
-        }
-
+       
         private void button1_Click(object sender, EventArgs e)
         {
             FiltraEOrdinaDati(false); // Ordina in ordine decrescente
